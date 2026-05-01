@@ -1,0 +1,51 @@
+# Build
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# Visual Studio
+.vs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+
+# App settings secrets
+appsettings.Development.json
+appsettings.Local.json
+
+# EF Core
+Migrations/*Snapshot.cs
+
+# Publish
+publish/
+
+# NuGet
+*.nupkg
+packages/
+
+# Test results
+TestResults/
+
+# Coverage
+coverage/
+*.coverage
+*.coveragexml
