@@ -13,6 +13,7 @@ obj/
 
 # VS Code
 .vscode/
+.dotnet/
 
 # Visual Studio
 .vs/

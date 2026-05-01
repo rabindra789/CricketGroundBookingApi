@@ -16,11 +16,14 @@ Backend API for a cricket ground booking platform built with ASP.NET Core Web AP
 - Project setup
 - Core domain entities
 - Git setup
+- Application DB context
+- Entity relationships
+- Database constraints
 
 ### In Progress
-- Database context
-- Entity relationships
-- EF Core migrations
+- Program.cs configuration
+- SQL server connection
+- Swagger setup
 
 ### Planned
 - Auth APIs
