@@ -1,5 +1,7 @@
 using CricketGroundBookingApi.Data;
 using Microsoft.EntityFrameworkCore;
+using CricketGroundBookingApi.Interfaces;
+using CricketGroundBookingApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
