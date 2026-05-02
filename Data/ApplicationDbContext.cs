@@ -69,5 +69,9 @@ public class ApplicationDbContext : DbContext
         builder.Entity<BookingAddon>().Property(ba => ba.TotalPrice).HasColumnType("decimal(18,2)");
 
         builder.Entity<Payment>().Property(p => p.Amount).HasColumnType("decimal(18,2)");
+
+        builder.Entity<Ground>().Property(g => g.Latitude).HasColumnType("decimal(9,6)");
+
+        builder.Entity<Ground>().Property(g => g.Longitude).HasColumnType("decimal(9,6)");
     }
 }
