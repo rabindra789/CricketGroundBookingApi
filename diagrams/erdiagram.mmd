@@ -1,0 +1,106 @@
+---
+id: e387853b-5685-4966-b269-536d2f002073
+---
+erDiagram
+    USER {
+        bigint Id PK
+        string FullName
+        string Email UK
+        string Phone UK
+        string PasswordHash
+        string Role
+        bool IsVerified
+        bool IsActive
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+
+    GROUND {
+        bigint Id PK
+        string Name
+        string Description
+        string Address
+        decimal Latitude
+        decimal Longitude
+        bool IsActive
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+
+    SLOT {
+        bigint Id PK
+        bigint GroundId FK
+        string SlotType
+        time StartTime
+        time EndTime
+        decimal BasePrice
+        bool IsActive
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+
+    BOOKING {
+        bigint Id PK
+        bigint UserId FK
+        bigint GroundId FK
+        bigint SlotId FK
+        date BookingDate
+        string SlotType
+        string Status
+        decimal BaseAmount
+        decimal AddonAmount
+        decimal TotalAmount
+        string PaymentStatus
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+
+    ADDON {
+        bigint Id PK
+        string Name
+        string AddonType
+        decimal Price
+        bool IsComplimentary
+        bool IsActive
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+
+    BOOKING_ADDON {
+        bigint Id PK
+        bigint BookingId FK
+        bigint AddonId FK
+        string ItemName
+        decimal UnitPrice
+        int Quantity
+        decimal TotalPrice
+        bool IsComplimentary
+    }
+
+    PAYMENT {
+        bigint Id PK
+        bigint BookingId FK "unique"
+        string PaymentReference
+        decimal Amount
+        string Status
+        datetime PaidAt
+        datetime CreatedAt
+    }
+
+    PACKAGE {
+        bigint Id PK
+        string Name
+        string Description
+        decimal Price
+        bool IsActive
+        datetime CreatedAt
+        datetime UpdatedAt
+    }
+
+    USER ||--o{ BOOKING : places
+    GROUND ||--o{ SLOT : has
+    GROUND ||--o{ BOOKING : receives
+    SLOT ||--o{ BOOKING : assigned_to
+    BOOKING ||--o{ BOOKING_ADDON : includes
+    ADDON ||--o{ BOOKING_ADDON : selected_as
+    BOOKING ||--o| PAYMENT : has
