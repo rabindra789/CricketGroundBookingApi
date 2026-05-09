@@ -19,14 +19,18 @@ Backend API for a cricket ground booking platform built with ASP.NET Core Web AP
 - Application DB context
 - Entity relationships
 - Database constraints
+- Initial EF core migration
+- SQL server integration
+- Register API
+- Login API
+- Password hashing
+- Swagger testing
 
 ### In Progress
-- Program.cs configuration
-- SQL server connection
-- Swagger setup
+- JWT authentication
+- Protected endpoints
 
 ### Planned
-- Auth APIs
 - Ground APIs
 - Booking engine
 - Pricing engine
