@@ -3,24 +3,31 @@ using CricketGroundBookingApi.DTOs.Auth;
 using CricketGroundBookingApi.Entities;
 using CricketGroundBookingApi.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.Json;
 
 namespace CricketGroundBookingApi.Services;
 
 public class AuthService : IAuthService
 {
     private readonly ApplicationDbContext _context;
+    private readonly IJwtService _jwtService;
 
-    public AuthService(ApplicationDbContext context)
+    public AuthService(ApplicationDbContext context, IJwtService jwtService)
     {
         _context = context;
+        _jwtService = jwtService;
     }
 
     public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
     {
         var emailExists = await _context.Users.AnyAsync(x => x.Email == request.Email);
+
         if(emailExists)
             throw new Exception("Email already exists");
+        
+        var phoneExists = await _context.Users.AnyAsync(x => x.Phone == request.Phone);
+        
+        if (phoneExists)
+            throw new Exception("Phone already exists.");
 
         var user = new User
         {
@@ -35,9 +42,11 @@ public class AuthService : IAuthService
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
+        var token = _jwtService.GenerateToken(user);
+
         return new AuthResponse
         {
-            Token = string.Empty, //TODO: JWT next step
+            Token = token,
             Role = user.Role,
             ExpiresAt = DateTime.UtcNow.AddHours(2)
         };
@@ -55,9 +64,11 @@ public class AuthService : IAuthService
         if(!validPassword)
             throw new Exception("Invalid Password.");
 
+        var token = _jwtService.GenerateToken(user);
+
         return new AuthResponse
         {
-            Token = string.Empty, //TODO: JWT next step
+            Token = token,
             Role = user.Role,
             ExpiresAt = DateTime.UtcNow.AddHours(2)
         };
