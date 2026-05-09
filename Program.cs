@@ -50,6 +50,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IGroundService,GroundService>();
 
 var jwtKey = builder.Configuration["Jwt:Key"];
 

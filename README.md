@@ -53,3 +53,14 @@ CricketGroundBookingApi/
 ├── Validators/
 ├── Program.cs
 └── appsettings.json
+```
+
+## Sample Users
+```
+- Admin:
+    - Email:admin@gmail.com
+    - Password:admin123
+- User:
+    - Email:rabindrameher@gmail.com
+    - Password:rabindra
+```
