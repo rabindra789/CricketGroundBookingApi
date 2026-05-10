@@ -35,3 +35,4 @@ jobs:
               -p 5107:5107 \
               -e DB_CONNECTION_STRING="${{ secrets.DB_CONNECTION_STRING }}" \
               cricket-api
+              
