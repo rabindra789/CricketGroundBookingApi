@@ -77,10 +77,12 @@ System.Text.Json.JsonException: A possible object cycle was detected. This can e
 This happened because EF core navigation properties created circuler references during JSON serilization.
 
 Example: 
+```text
 Ground
   └── Slots
   └── Ground
   └── Slots
+```
 
 ### Solution
 Configured JSON serializer to ignore circular references in `Program.cs`.
