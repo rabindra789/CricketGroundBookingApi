@@ -37,10 +37,10 @@ A backend API for cricket ground booking management built with ASP.NET Core Web 
 - Swagger documentation
 - Automatic database migrations on startup
 - Docker production container support
+- Payment APIs
 
 ### In Progress
 
-- Payment APIs
 - Addon management APIs
 - Booking availability / calendar filtering
 - Enhanced admin dashboard endpoints
