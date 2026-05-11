@@ -1,4 +1,8 @@
 # Cricket Ground Booking API
+![.NET](https://img.shields.io/badge/.NET-10-blue)
+![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-red)
+![Docker](https://img.shields.io/badge/Docker-Enabled-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 A backend API for cricket ground booking management built with ASP.NET Core Web API and Microsoft SQL Server.
 
