@@ -15,9 +15,24 @@ public class SlotService : ISlotService
         _context = context;
     }
 
-    public async Task<Slot> CreateAsync(CreateSlotRequest request)
+    private static SlotResponse MapToResponse(Slot slot)
     {
-        var groundExists = await _context.Grounds.AnyAsync(g => g.Id == request.GroundId);
+        return new SlotResponse
+        {
+            Id = slot.Id,
+            GroundId = slot.GroundId,
+            SlotType = slot.SlotType,
+            StartTime = slot.StartTime,
+            EndTime = slot.EndTime,
+            BasePrice = slot.BasePrice,
+            IsActive = slot.IsActive
+        };
+    }
+
+    public async Task<SlotResponse> CreateAsync(CreateSlotRequest request)
+    {
+        var groundExists = await _context.Grounds
+            .AnyAsync(g => g.Id == request.GroundId);
 
         if (!groundExists)
             throw new Exception("Ground not found.");
@@ -28,7 +43,9 @@ public class SlotService : ISlotService
         );
 
         if (slotExists)
-            throw new Exception($"Slot type '{request.SlotType}' already exists for this ground.");
+            throw new Exception(
+                $"Slot type '{request.SlotType}' already exists for this ground."
+            );
 
         var slot = new Slot
         {
@@ -43,30 +60,46 @@ public class SlotService : ISlotService
 
         await _context.SaveChangesAsync();
 
-        return slot;
+        return MapToResponse(slot);
     }
 
-    public async Task<List<Slot>> GetAllAsync()
+    public async Task<List<SlotResponse>> GetAllAsync()
     {
-        return await _context.Slots.Include(s => s.Ground).OrderBy(s => s.GroundId).ToListAsync();
+        var slots = await _context.Slots
+            .OrderBy(s => s.GroundId)
+            .ToListAsync();
+
+        return slots.Select(MapToResponse).ToList();
     }
 
-    public async Task<List<Slot>> GetByGroundIdAsync(long groundId)
+    public async Task<List<SlotResponse>> GetByGroundIdAsync(long groundId)
     {
-        return await _context.Slots.Where(s => s.GroundId == groundId).OrderBy(s => s.StartTime).ToListAsync();
+        var slots = await _context.Slots
+            .Where(s => s.GroundId == groundId)
+            .OrderBy(s => s.StartTime)
+            .ToListAsync();
+
+        return slots.Select(MapToResponse).ToList();
     }
 
-    public async Task<Slot?> GetByIdAsync(long id)
+    public async Task<SlotResponse?> GetByIdAsync(long id)
     {
-        return await _context.Slots.Include(s => s.Ground).FirstOrDefaultAsync(s => s.Id == id);
+        var slot = await _context.Slots
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (slot == null)
+            return null;
+
+        return MapToResponse(slot);
     }
 
-    public async Task<Slot?> UpdateAsync(
+    public async Task<SlotResponse?> UpdateAsync(
         long id,
         UpdateSlotRequest request
     )
     {
-        var slot = await _context.Slots.FirstOrDefaultAsync(s => s.Id == id);
+        var slot = await _context.Slots
+            .FirstOrDefaultAsync(s => s.Id == id);
 
         if (slot is null)
             return null;
@@ -80,12 +113,13 @@ public class SlotService : ISlotService
 
         await _context.SaveChangesAsync();
 
-        return slot;
+        return MapToResponse(slot);
     }
 
     public async Task<bool> DeleteAsync(long id)
     {
-        var slot = await _context.Slots.FirstOrDefaultAsync(s => s.Id == id);
+        var slot = await _context.Slots
+            .FirstOrDefaultAsync(s => s.Id == id);
 
         if (slot is null)
             return false;

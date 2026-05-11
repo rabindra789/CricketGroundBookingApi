@@ -5,10 +5,10 @@ namespace CricketGroundBookingApi.Interfaces;
 
 public interface ISlotService
 {
-    Task<Slot> CreateAsync(CreateSlotRequest request);
-    Task<List<Slot>> GetAllAsync();
-    Task<List<Slot>> GetByGroundIdAsync(long groundId);
-    Task<Slot?> GetByIdAsync(long id);
-    Task<Slot?> UpdateAsync(long id, UpdateSlotRequest request);
+    Task<SlotResponse> CreateAsync(CreateSlotRequest request);
+    Task<List<SlotResponse>> GetAllAsync();
+    Task<List<SlotResponse>> GetByGroundIdAsync(long groundId);
+    Task<SlotResponse?> GetByIdAsync(long id);
+    Task<SlotResponse?> UpdateAsync(long id, UpdateSlotRequest request);
     Task<bool> DeleteAsync(long id);
 }
