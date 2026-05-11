@@ -128,4 +128,30 @@ public class BookingController : ControllerBase
             message = "Booking cancelled successfully"
         });
     }
+
+    [HttpGet("availability")]
+    public async Task<IActionResult> GetAvailability(
+        [FromQuery] long groundId,
+        [FromQuery] DateOnly date
+    )
+    {
+        try
+        {
+            var result = await _bookingService.GetAvailabilityAsync(groundId, date);
+
+            return Ok(new
+            {
+                success = true,
+                date = result
+            });
+        }
+        catch (Exception)
+        {
+            return BadRequest(new
+            {
+                success = false,
+                message = "Something went wrong"
+            });
+        }
+    }
 }

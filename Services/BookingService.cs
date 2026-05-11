@@ -210,4 +210,29 @@ public class BookingService : IBookingService
 
         return true;
     }
+
+    public async Task<BookingAvailabilityResponse> GetAvailabilityAsync(
+        long groundId,
+        DateOnly date
+    )
+    {
+        var bookings = await _context.Bookings
+            .Where(b =>
+                b.GroundId == groundId &&
+                b.BookingDate == date &&
+                b.Status != "Cancelled"
+            )
+            .ToListAsync();
+
+        bool hasDay = bookings.Any(b => b.SlotType == "Day");
+        bool hasNight = bookings.Any(b => b.SlotType == "Night");
+        bool hasFullDay = bookings.Any(b => b.SlotType == "FullDay");
+
+        return new BookingAvailabilityResponse
+        {
+            Day = !hasDay && !hasFullDay,
+            Night = !hasNight && !hasFullDay,
+            FullDay = !hasDay && !hasNight && !hasFullDay
+        };
+    }
 }

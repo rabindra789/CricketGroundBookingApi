@@ -22,4 +22,9 @@ public interface IBookingService
         long bookingId,
         long userId
     );
+
+    Task<BookingAvailabilityResponse> GetAvailabilityAsync(
+        long groundId,
+        DateOnly date
+    );
 }
