@@ -1,4 +1,5 @@
 # Cricket Ground Booking API
+
 ![.NET](https://img.shields.io/badge/.NET-10-blue)
 ![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-red)
 ![Docker](https://img.shields.io/badge/Docker-Enabled-blue)
@@ -121,16 +122,20 @@ docker run -e DB_CONNECTION_STRING="Server=your-sql-server;Database=CricketGroun
 ```bash
 docker network create cricket-network
 ```
+
 Run SQL Server and API containers on the same network:
+
 ```bash
 docker run --network cricket-network ...
 ```
+
 This allows the API container to resolve:
+
 ```bash
 cricket-db
 ```
-as the SQL Server hostname.
 
+as the SQL Server hostname.
 
 ## Configuration
 
@@ -184,6 +189,13 @@ Requires authenticated user.
 - `GET /api/booking/my`
 - `GET /api/booking/{id}`
 - `DELETE /api/booking/{id}`
+- `GET /api/booking/availability?groundId={groundId}&date={yyyy-MM-dd}`
+
+### Payment APIs
+
+Requires authenticated user.
+
+- `POST /api/v1/payments/pay/{bookingId}`
 
 ### User Profile
 
