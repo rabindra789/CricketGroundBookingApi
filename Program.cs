@@ -70,6 +70,7 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IAddonService, AddonService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 var jwtKey = builder.Configuration["Jwt:Key"];
 

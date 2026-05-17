@@ -40,17 +40,23 @@ A backend API for cricket ground booking management built with ASP.NET Core Web 
 - Docker production container support
 - Payment APIs
 - Addon management APIs
+- Enhanced admin dashboard endpoints
 
 ### In Progress
 
 - Booking availability / calendar filtering
-- Enhanced admin dashboard endpoints
 
 ### Planned
 
+- Ground image upload system
+- Invoice and receipt generation
+- Tournament / multi-day booking support
 - Pricing engine and rate calculation
-- Admin analytics dashboard
 - Full booking history export
+- Email notification system
+- Advanced admin reporting
+- Revenue analytics and charts
+- Booking reminder notifications
 
 ## Requirements
 
@@ -207,6 +213,7 @@ Requires `Authorization: Bearer <token>` and role `Admin`.
 - `POST /api/v1/slots`
 - `PUT /api/v1/slots/{id}`
 - `DELETE /api/v1/slots/{id}`
+- `GET /api/v1/admin/dashboard`
 
 ### Booking APIs
 
