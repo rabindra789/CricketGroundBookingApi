@@ -6,34 +6,43 @@
     }
 
     :root {
-        --green: #1D9E75;
-        --green-lt: #E1F5EE;
-        --green-dk: #085041;
-        --blue: #378ADD;
-        --blue-lt: #E6F1FB;
-        --amber: #EF9F27;
-        --amber-lt: #FAEEDA;
-        --red: #E24B4A;
-        --red-lt: #FCEBEB;
-        --gray: #888780;
-        --gray-lt: #F1EFE8;
-        --teal: #1D9E75;
-        --purple: #534AB7;
-        --purple-lt: #EEEDFE
+        --green: #1f8f66;
+        --green-lt: #d3f4e6;
+        --green-dk: #1f5f42;
+        --blue: #3e72e3;
+        --blue-lt: #e5efff;
+        --amber: #c68828;
+        --amber-lt: #fff4d8;
+        --red: #d14646;
+        --red-lt: #ffe5e5;
+        --purple: #8f6bff;
+        --purple-lt: #f1ecff;
+        --color-background-primary: #ffffff;
+        --color-background-secondary: #f6f8fb;
+        --color-background-tertiary: #eef2f7;
+        --color-border-secondary: #d8e2ed;
+        --color-border-tertiary: #d1dbe6;
+        --color-text-primary: #111827;
+        --color-text-secondary: #566171;
+        --color-text-tertiary: #7d8ea2;
+        --color-text-inverse: #ffffff;
+        --color-background-action: #eaf2ff;
     }
 
     body {
         font-family: var(--font-sans, "Anthropic Sans", sans-serif);
         font-size: 14px;
         line-height: 1.6;
-        color: var(--color-text-primary)
+        color: var(--color-text-primary);
+        background: #f3f6fb;
+        height: 100%;
     }
 
     .wrap {
         display: grid;
         grid-template-columns: 220px 1fr;
         gap: 0;
-        min-height: 600px
+        min-height: 100%
     }
 
     .sidebar {
@@ -41,8 +50,9 @@
         padding: 12px 0;
         position: sticky;
         top: 0;
-        max-height: 700px;
-        overflow-y: auto
+        max-height: 100%;
+        overflow-y: auto;
+        background: var(--color-background-primary);
     }
 
     .sidebar-section {
@@ -52,7 +62,7 @@
         color: var(--color-text-tertiary);
         text-transform: uppercase;
         letter-spacing: .06em;
-        margin-top: 8px
+        margin-top: 8px;
     }
 
     .nav-item {
@@ -64,11 +74,11 @@
         border-radius: 0;
         font-size: 13px;
         color: var(--color-text-secondary);
-        transition: background .15s
+        transition: background .15s;
     }
 
     .nav-item:hover {
-        background: var(--color-background-secondary)
+        background: #eef4fb;
     }
 
     .nav-item.active {
@@ -106,11 +116,12 @@
     .content {
         padding: 20px 24px;
         overflow-y: auto;
-        max-height: 700px
+        max-height: 100%;
+        background: transparent;
     }
 
     .page {
-        display: none
+        display: none;
     }
 
     .page.active {
@@ -165,13 +176,13 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        background: var(--color-background-secondary);
+        background: #f7faff;
         border: 0.5px solid var(--color-border-tertiary);
         border-radius: 8px;
         padding: 10px 14px;
         margin-bottom: 14px;
         font-family: var(--font-mono, "Courier New", monospace);
-        font-size: 13px
+        font-size: 13px;
     }
 
     .section-block {
@@ -179,7 +190,7 @@
         border: 0.5px solid var(--color-border-tertiary);
         border-radius: var(--border-radius-lg, 12px);
         padding: 14px 16px;
-        margin-bottom: 12px
+        margin-bottom: 12px;
     }
 
     .section-label {
@@ -188,11 +199,11 @@
         color: var(--color-text-tertiary);
         text-transform: uppercase;
         letter-spacing: .06em;
-        margin-bottom: 8px
+        margin-bottom: 8px;
     }
 
     pre {
-        background: var(--color-background-secondary);
+        background: #f4f8ff;
         border: 0.5px solid var(--color-border-tertiary);
         border-radius: 8px;
         padding: 12px;
@@ -201,7 +212,7 @@
         overflow-x: auto;
         white-space: pre;
         line-height: 1.6;
-        margin-top: 6px
+        margin-top: 6px;
     }
 
     .key {
@@ -221,37 +232,37 @@
     }
 
     .note {
-        background: var(--blue-lt);
+        background: #eef4ff;
         border-left: 3px solid var(--blue);
         border-radius: 0 6px 6px 0;
         padding: 10px 12px;
         font-size: 13px;
-        color: var(--color-text-secondary);
-        margin: 10px 0
+        color: var(--color-text-primary);
+        margin: 10px 0;
     }
 
     .warn {
-        background: var(--amber-lt);
+        background: #fff4db;
         border-left: 3px solid var(--amber);
         border-radius: 0 6px 6px 0;
         padding: 10px 12px;
         font-size: 13px;
-        color: var(--color-text-secondary);
-        margin: 10px 0
+        color: var(--color-text-primary);
+        margin: 10px 0;
     }
 
     .danger {
-        background: var(--red-lt);
+        background: #ffe9e9;
         border-left: 3px solid var(--red);
         border-radius: 0 6px 6px 0;
         padding: 10px 12px;
         font-size: 13px;
-        color: var(--color-text-secondary);
-        margin: 10px 0
+        color: var(--color-text-primary);
+        margin: 10px 0;
     }
 
     .try-btn {
-        background: var(--color-background-primary);
+        background: var(--color-background-secondary);
         border: 0.5px solid var(--color-border-secondary);
         border-radius: 6px;
         padding: 6px 14px;
@@ -259,11 +270,11 @@
         cursor: pointer;
         color: var(--color-text-primary);
         transition: background .15s;
-        margin-top: 8px
+        margin-top: 8px;
     }
 
     .try-btn:hover {
-        background: var(--color-background-secondary)
+        background: #e5efff;
     }
 
     .response-panel {
@@ -394,15 +405,51 @@
 
     td {
         padding: 7px 10px;
-        border-top: 0.5px solid var(--color-border-tertiary)
+        border-top: 0.5px solid var(--color-border-tertiary);
     }
 
     .code {
         font-family: var(--font-mono, "Courier New", monospace);
-        background: var(--color-background-secondary);
+        background: rgba(255, 255, 255, 0.04);
         padding: 1px 5px;
         border-radius: 4px;
-        font-size: 11px
+        font-size: 11px;
+    }
+
+    @media (max-width: 980px) {
+        .wrap {
+            grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+            position: relative;
+            top: auto;
+            max-height: none;
+            border-right: none;
+            border-bottom: 0.5px solid var(--color-border-tertiary);
+        }
+
+        .content {
+            max-height: none;
+            padding: 16px;
+        }
+
+        .endpoint-header {
+            flex-wrap: wrap;
+        }
+
+        .sidebar {
+            padding: 12px 10px;
+        }
+
+        .nav-item {
+            font-size: 12px;
+            padding: 10px 10px;
+        }
+
+        .grid2 {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
@@ -637,10 +684,10 @@
             <div class="section-block">
                 <div class="section-label">Request body</div>
                 <pre>{
-  <span class="key">"name"</span>: <span class="str">"Rohit Sharma"</span>,
+  <span class="key">"fullName"</span>: <span class="str">"Rohit Sharma"</span>,
   <span class="key">"email"</span>: <span class="str">"rohit@example.com"</span>,
-  <span class="key">"password"</span>: <span class="str">"SecurePass@123"</span>,
-  <span class="key">"phone"</span>: <span class="str">"9876543210"</span>
+  <span class="key">"phone"</span>: <span class="str">"9876543210"</span>,
+  <span class="key">"password"</span>: <span class="str">"SecurePass@123"</span>
 }</pre>
             </div>
             <div class="section-block">
@@ -656,11 +703,11 @@
                     </tr>
                     <tr>
                         <td><span class="code">password</span></td>
-                        <td>Min 8 chars, one uppercase, one special char</td>
+                        <td>Min 8 chars and stored securely with bcrypt</td>
                     </tr>
                     <tr>
                         <td><span class="code">phone</span></td>
-                        <td>10-digit numeric string</td>
+                        <td>Must be unique</td>
                     </tr>
                 </table>
             </div>
@@ -668,12 +715,16 @@
                 <div class="section-label">Success response <span class="status-200">200</span></div>
                 <pre>{
   <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"message"</span>: <span class="str">"registration successful"</span>,
   <span class="key">"data"</span>: {
-    <span class="key">"message"</span>: <span class="str">"User registered successfully"</span>
+    <span class="key">"token"</span>: <span class="str">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>,
+    <span class="key">"role"</span>: <span class="str">"User"</span>,
+    <span class="key">"expiresAt"</span>: <span class="str">"2026-05-17T17:00:00Z"</span>
   }
 }</pre>
             </div>
-            <div class="note">After registration, direct users to the login screen to obtain a JWT token.</div>
+            <div class="note">After registration, use the returned token for protected endpoints in the <span
+                    class="code">Authorization</span> header.</div>
         </div>
 
         <!-- LOGIN -->
@@ -685,7 +736,7 @@
             <div class="section-block">
                 <div class="section-label">Request body</div>
                 <pre>{
-  <span class="key">"email"</span>: <span class="str">"rohit@example.com"</span>,
+  <span class="key">"emailOrPhone"</span>: <span class="str">"rohit@example.com"</span>,
   <span class="key">"password"</span>: <span class="str">"SecurePass@123"</span>
 }</pre>
             </div>
@@ -693,11 +744,11 @@
                 <div class="section-label">Success response <span class="status-200">200</span></div>
                 <pre>{
   <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"message"</span>: <span class="str">"Login successful"</span>,
   <span class="key">"data"</span>: {
     <span class="key">"token"</span>: <span class="str">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>,
-    <span class="key">"userId"</span>: <span class="num">1</span>,
-    <span class="key">"name"</span>: <span class="str">"Rohit Sharma"</span>,
-    <span class="key">"email"</span>: <span class="str">"rohit@example.com"</span>
+    <span class="key">"role"</span>: <span class="str">"User"</span>,
+    <span class="key">"expiresAt"</span>: <span class="str">"2026-05-17T17:00:00Z"</span>
   }
 }</pre>
             </div>
@@ -722,17 +773,19 @@
     {
       <span class="key">"id"</span>: <span class="num">1</span>,
       <span class="key">"name"</span>: <span class="str">"Eden Turf Arena"</span>,
-      <span class="key">"location"</span>: <span class="str">"Salt Lake, Kolkata"</span>,
       <span class="key">"description"</span>: <span class="str">"Premium floodlit turf with changing rooms"</span>,
-      <span class="key">"imageUrl"</span>: <span class="str">"https://cdn.example.com/grounds/1.jpg"</span>,
-      <span class="key">"pitchType"</span>: <span class="str">"Artificial"</span>,
-      <span class="key">"capacity"</span>: <span class="num">22</span>
+      <span class="key">"address"</span>: <span class="str">"Salt Lake, Kolkata"</span>,
+      <span class="key">"latitude"</span>: <span class="num">22.5726</span>,
+      <span class="key">"longitude"</span>: <span class="num">88.3639</span>,
+      <span class="key">"isActive"</span>: <span class="bool">true</span>,
+      <span class="key">"createdAt"</span>: <span class="str">"2026-05-01T12:00:00Z"</span>,
+      <span class="key">"updatedAt"</span>: <span class="str">"2026-05-01T12:00:00Z"</span>
     }
   ]
 }</pre>
             </div>
-            <div class="note">Frontend: render each item as a card with name, location, image, and a "Book Now" CTA
-                linking to the ground detail page.</div>
+            <div class="note">Frontend: render each item with name, description, address, and available booking CTA.
+            </div>
         </div>
 
         <!-- GROUND BY ID -->
@@ -740,8 +793,7 @@
             <span class="tag tag-open">Public</span>
             <h1>Ground by ID</h1>
             <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/grounds/{id}</div>
-            <p class="desc">Returns full details for a single ground including all turf metadata. Use on the ground
-                detail / booking screen.</p>
+            <p class="desc">Returns full details for a single ground. Use on the ground detail or booking screen.</p>
             <div class="section-block">
                 <div class="section-label">Path parameter</div>
                 <table>
@@ -764,12 +816,13 @@
   <span class="key">"data"</span>: {
     <span class="key">"id"</span>: <span class="num">1</span>,
     <span class="key">"name"</span>: <span class="str">"Eden Turf Arena"</span>,
-    <span class="key">"location"</span>: <span class="str">"Salt Lake, Kolkata"</span>,
-    <span class="key">"description"</span>: <span class="str">"Premium floodlit turf"</span>,
-    <span class="key">"imageUrl"</span>: <span class="str">"https://cdn.example.com/grounds/1.jpg"</span>,
-    <span class="key">"pitchType"</span>: <span class="str">"Artificial"</span>,
-    <span class="key">"capacity"</span>: <span class="num">22</span>,
-    <span class="key">"amenities"</span>: [<span class="str">"Floodlights"</span>, <span class="str">"Changing Room"</span>, <span class="str">"Parking"</span>]
+    <span class="key">"description"</span>: <span class="str">"Premium floodlit turf with changing rooms."</span>,
+    <span class="key">"address"</span>: <span class="str">"Salt Lake, Kolkata"</span>,
+    <span class="key">"latitude"</span>: <span class="num">22.5726</span>,
+    <span class="key">"longitude"</span>: <span class="num">88.3639</span>,
+    <span class="key">"isActive"</span>: <span class="bool">true</span>,
+    <span class="key">"createdAt"</span>: <span class="str">"2026-05-01T12:00:00Z"</span>,
+    <span class="key">"updatedAt"</span>: <span class="str">"2026-05-01T12:00:00Z"</span>
   }
 }</pre>
             </div>
@@ -780,7 +833,7 @@
             <span class="tag tag-open">Public</span>
             <h1>All Slots</h1>
             <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/slots</div>
-            <p class="desc">Returns all slot definitions. Each slot has a type (Day/Night/FullDay), timing, and price.
+            <p class="desc">Returns all slot definitions. Each slot has a type, timing, base price, and active status.
             </p>
             <div class="section-block">
                 <div class="section-label">Success response <span class="status-200">200</span></div>
@@ -791,17 +844,19 @@
       <span class="key">"id"</span>: <span class="num">1</span>,
       <span class="key">"groundId"</span>: <span class="num">1</span>,
       <span class="key">"slotType"</span>: <span class="str">"Day"</span>,
-      <span class="key">"startTime"</span>: <span class="str">"06:00"</span>,
-      <span class="key">"endTime"</span>: <span class="str">"14:00"</span>,
-      <span class="key">"price"</span>: <span class="num">1500.00</span>
+      <span class="key">"startTime"</span>: <span class="str">"06:00:00"</span>,
+      <span class="key">"endTime"</span>: <span class="str">"14:00:00"</span>,
+      <span class="key">"basePrice"</span>: <span class="num">1500.00</span>,
+      <span class="key">"isActive"</span>: <span class="bool">true</span>
     },
     {
       <span class="key">"id"</span>: <span class="num">2</span>,
       <span class="key">"groundId"</span>: <span class="num">1</span>,
       <span class="key">"slotType"</span>: <span class="str">"Night"</span>,
-      <span class="key">"startTime"</span>: <span class="str">"18:00"</span>,
-      <span class="key">"endTime"</span>: <span class="str">"23:59"</span>,
-      <span class="key">"price"</span>: <span class="num">2000.00</span>
+      <span class="key">"startTime"</span>: <span class="str">"18:00:00"</span>,
+      <span class="key">"endTime"</span>: <span class="str">"23:59:00"</span>,
+      <span class="key">"basePrice"</span>: <span class="num">2000.00</span>,
+      <span class="key">"isActive"</span>: <span class="bool">true</span>
     }
   ]
 }</pre>
@@ -837,8 +892,9 @@
         <div class="page" id="page-booking-create">
             <span class="tag tag-auth">Protected</span>
             <h1>Create Booking</h1>
-            <div class="endpoint-header"><span class="method-badge post">POST</span> /api/v1/booking</div>
-            <p class="desc">Creates a new booking. Returns a booking in <span class="code">PendingPayment</span> status.
+            <div class="endpoint-header"><span class="method-badge post">POST</span> /api/v1/Booking</div>
+            <p class="desc">Creates a new booking. Returns a booking in a <span class="code">PendingPayment</span>
+                status.
                 The slot is held until payment is made.</p>
             <div class="section-block">
                 <div class="section-label">Request body</div>
@@ -846,6 +902,7 @@
   <span class="key">"groundId"</span>: <span class="num">1</span>,
   <span class="key">"slotId"</span>: <span class="num">2</span>,
   <span class="key">"bookingDate"</span>: <span class="str">"2026-06-01"</span>,
+  <span class="key">"slotType"</span>: <span class="str">"Night"</span>,
   <span class="key">"addonIds"</span>: [<span class="num">1</span>, <span class="num">3</span>]
 }</pre>
             </div>
@@ -853,31 +910,33 @@
                 <div class="section-label">Success response <span class="status-200">200</span></div>
                 <pre>{
   <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"message"</span>: <span class="str">"Booking created successfully"</span>,
   <span class="key">"data"</span>: {
-    <span class="key">"bookingId"</span>: <span class="num">42</span>,
-    <span class="key">"status"</span>: <span class="str">"PendingPayment"</span>,
-    <span class="key">"paymentStatus"</span>: <span class="str">"PendingPayment"</span>,
+    <span class="key">"id"</span>: <span class="num">42</span>,
+    <span class="key">"groundId"</span>: <span class="num">1</span>,
     <span class="key">"groundName"</span>: <span class="str">"Eden Turf Arena"</span>,
+    <span class="key">"slotId"</span>: <span class="num">2</span>,
     <span class="key">"slotType"</span>: <span class="str">"Night"</span>,
     <span class="key">"bookingDate"</span>: <span class="str">"2026-06-01"</span>,
-    <span class="key">"totalAmount"</span>: <span class="num">2600.00</span>,
-    <span class="key">"addons"</span>: [
-      { <span class="key">"name"</span>: <span class="str">"Cricket Kit"</span>, <span class="key">"price"</span>: <span class="num">300.00</span> },
-      { <span class="key">"name"</span>: <span class="str">"Scoreboard"</span>, <span class="key">"price"</span>: <span class="num">300.00</span> }
-    ]
+    <span class="key">"baseAmount"</span>: <span class="num">1800.00</span>,
+    <span class="key">"addonAmount"</span>: <span class="num">300.00</span>,
+    <span class="key">"totalAmount"</span>: <span class="num">2100.00</span>,
+    <span class="key">"status"</span>: <span class="str">"PendingPayment"</span>,
+    <span class="key">"paymentStatus"</span>: <span class="str">"Pending"</span>,
+    <span class="key">"createdAt"</span>: <span class="str">"2026-05-17T14:00:00Z"</span>
   }
 }</pre>
             </div>
             <div class="warn">After creating a booking, immediately redirect to the payment screen with the <span
-                    class="code">bookingId</span>.</div>
+                    class="code">id</span>.</div>
         </div>
 
         <!-- MY BOOKINGS -->
         <div class="page" id="page-booking-mine">
             <span class="tag tag-auth">Protected</span>
             <h1>My Bookings</h1>
-            <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/booking/my-bookings</div>
-            <p class="desc">Returns all bookings for the authenticated user. Use this for the user's booking history /
+            <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/Booking/my</div>
+            <p class="desc">Returns all bookings for the authenticated user. Use this for the user's booking history or
                 dashboard screen.</p>
             <div class="section-block">
                 <div class="section-label">Success response <span class="status-200">200</span></div>
@@ -885,47 +944,49 @@
   <span class="key">"success"</span>: <span class="bool">true</span>,
   <span class="key">"data"</span>: [
     {
-      <span class="key">"bookingId"</span>: <span class="num">42</span>,
+      <span class="key">"id"</span>: <span class="num">42</span>,
+      <span class="key">"groundId"</span>: <span class="num">1</span>,
       <span class="key">"groundName"</span>: <span class="str">"Eden Turf Arena"</span>,
+      <span class="key">"slotId"</span>: <span class="num">2</span>,
       <span class="key">"slotType"</span>: <span class="str">"Night"</span>,
       <span class="key">"bookingDate"</span>: <span class="str">"2026-06-01"</span>,
+      <span class="key">"baseAmount"</span>: <span class="num">1800.00</span>,
+      <span class="key">"addonAmount"</span>: <span class="num">300.00</span>,
+      <span class="key">"totalAmount"</span>: <span class="num">2100.00</span>,
       <span class="key">"status"</span>: <span class="str">"Confirmed"</span>,
       <span class="key">"paymentStatus"</span>: <span class="str">"Paid"</span>,
-      <span class="key">"totalAmount"</span>: <span class="num">2600.00</span>
+      <span class="key">"createdAt"</span>: <span class="str">"2026-05-17T14:00:00Z"</span>
     }
   ]
 }</pre>
             </div>
             <div class="note">Frontend: group by <span class="code">status</span> — show "Upcoming" for Confirmed,
-                "Pending Payment" as a CTA, and "Past" for expired confirmed bookings.</div>
+                "PendingPayment" as a CTA, and past dates separately.</div>
         </div>
 
         <!-- BOOKING BY ID -->
         <div class="page" id="page-booking-id">
             <span class="tag tag-auth">Protected</span>
             <h1>Booking by ID</h1>
-            <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/booking/{id}</div>
+            <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/Booking/{id}</div>
             <p class="desc">Returns full details for a single booking. Only accessible by the booking owner.</p>
             <div class="section-block">
                 <div class="section-label">Success response <span class="status-200">200</span></div>
                 <pre>{
   <span class="key">"success"</span>: <span class="bool">true</span>,
   <span class="key">"data"</span>: {
-    <span class="key">"bookingId"</span>: <span class="num">42</span>,
+    <span class="key">"id"</span>: <span class="num">42</span>,
     <span class="key">"groundId"</span>: <span class="num">1</span>,
     <span class="key">"groundName"</span>: <span class="str">"Eden Turf Arena"</span>,
-    <span class="key">"location"</span>: <span class="str">"Salt Lake, Kolkata"</span>,
+    <span class="key">"slotId"</span>: <span class="num">2</span>,
     <span class="key">"slotType"</span>: <span class="str">"Night"</span>,
-    <span class="key">"startTime"</span>: <span class="str">"18:00"</span>,
-    <span class="key">"endTime"</span>: <span class="str">"23:59"</span>,
     <span class="key">"bookingDate"</span>: <span class="str">"2026-06-01"</span>,
+    <span class="key">"baseAmount"</span>: <span class="num">1800.00</span>,
+    <span class="key">"addonAmount"</span>: <span class="num">300.00</span>,
+    <span class="key">"totalAmount"</span>: <span class="num">2100.00</span>,
     <span class="key">"status"</span>: <span class="str">"Confirmed"</span>,
     <span class="key">"paymentStatus"</span>: <span class="str">"Paid"</span>,
-    <span class="key">"transactionId"</span>: <span class="str">"TXN-20260601-0042"</span>,
-    <span class="key">"totalAmount"</span>: <span class="num">2600.00</span>,
-    <span class="key">"addons"</span>: [
-      { <span class="key">"name"</span>: <span class="str">"Cricket Kit"</span>, <span class="key">"snapshotPrice"</span>: <span class="num">300.00</span> }
-    ]
+    <span class="key">"createdAt"</span>: <span class="str">"2026-05-17T14:00:00Z"</span>
   }
 }</pre>
             </div>
@@ -935,16 +996,14 @@
         <div class="page" id="page-booking-cancel">
             <span class="tag tag-auth">Protected</span>
             <h1>Cancel Booking</h1>
-            <div class="endpoint-header"><span class="method-badge delete">DELETE</span> /api/v1/booking/{id}</div>
+            <div class="endpoint-header"><span class="method-badge delete">DELETE</span> /api/v1/Booking/{id}</div>
             <p class="desc">Cancels the specified booking. Only the booking owner can cancel. Cancelled bookings are
                 ignored in future conflict checks.</p>
             <div class="section-block">
                 <div class="section-label">Success response <span class="status-200">200</span></div>
                 <pre>{
   <span class="key">"success"</span>: <span class="bool">true</span>,
-  <span class="key">"data"</span>: {
-    <span class="key">"message"</span>: <span class="str">"Booking cancelled successfully"</span>
-  }
+  <span class="key">"message"</span>: <span class="str">"Booking cancelled successfully"</span>
 }</pre>
             </div>
             <div class="danger">Show a confirmation dialog before calling this endpoint. Cancellation may not be
@@ -956,7 +1015,7 @@
             <span class="tag tag-open">Public</span>
             <h1>Check Availability</h1>
             <div class="endpoint-header"><span class="method-badge get">GET</span>
-                /api/v1/booking/availability?groundId=1&date=2026-05-12</div>
+                /api/v1/Booking/availability?groundId=1&date=2026-05-12</div>
             <p class="desc">Returns which slots are already booked for a ground on a given date. Use this to disable
                 unavailable slot options in the UI before the user clicks "Book".</p>
             <div class="section-block">
@@ -983,19 +1042,17 @@
                 <div class="section-label">Success response <span class="status-200">200</span></div>
                 <pre>{
   <span class="key">"success"</span>: <span class="bool">true</span>,
-  <span class="key">"data"</span>: {
-    <span class="key">"date"</span>: <span class="str">"2026-05-12"</span>,
-    <span class="key">"groundId"</span>: <span class="num">1</span>,
-    <span class="key">"bookedSlots"</span>: [
-      { <span class="key">"slotId"</span>: <span class="num">2</span>, <span class="key">"slotType"</span>: <span class="str">"Night"</span> }
-    ],
-    <span class="key">"isFullDayBooked"</span>: <span class="bool">false</span>
+  <span class="key">"date"</span>: {
+    <span class="key">"day"</span>: <span class="bool">true</span>,
+    <span class="key">"night"</span>: <span class="bool">false</span>,
+    <span class="key">"fullDay"</span>: <span class="bool">false</span>
   }
 }</pre>
             </div>
             <div class="note">Frontend flow: call availability when the user selects a date. If <span
                     class="code">isFullDayBooked</span> is true, disable all slot buttons. Otherwise disable only the
-                <span class="code">bookedSlots</span> entries.</div>
+                <span class="code">bookedSlots</span> entries.
+            </div>
         </div>
 
         <!-- PAYMENT -->
@@ -1034,7 +1091,8 @@
 }</pre>
             </div>
             <div class="note">After a successful payment response, redirect to a booking confirmation screen showing the
-                <span class="code">transactionId</span> and a summary card.</div>
+                <span class="code">transactionId</span> and a summary card.
+            </div>
         </div>
 
         <!-- ADDONS ALL -->
@@ -1051,15 +1109,19 @@
   <span class="key">"data"</span>: [
     {
       <span class="key">"id"</span>: <span class="num">1</span>,
-      <span class="key">"name"</span>: <span class="str">"Cricket Kit (Bat, Pads, Gloves)"</span>,
+      <span class="key">"name"</span>: <span class="str">"Cricket Kit"</span>,
+      <span class="key">"addonType"</span>: <span class="str">"Equipment"</span>,
       <span class="key">"price"</span>: <span class="num">300.00</span>,
-      <span class="key">"isComplimentary"</span>: <span class="bool">false</span>
+      <span class="key">"isComplimentary"</span>: <span class="bool">false</span>,
+      <span class="key">"isActive"</span>: <span class="bool">true</span>
     },
     {
       <span class="key">"id"</span>: <span class="num">4</span>,
       <span class="key">"name"</span>: <span class="str">"Water Bottles"</span>,
+      <span class="key">"addonType"</span>: <span class="str">"Service"</span>,
       <span class="key">"price"</span>: <span class="num">0.00</span>,
-      <span class="key">"isComplimentary"</span>: <span class="bool">true</span>
+      <span class="key">"isComplimentary"</span>: <span class="bool">true</span>,
+      <span class="key">"isActive"</span>: <span class="bool">true</span>
     }
   ]
 }</pre>
@@ -1078,6 +1140,7 @@
                 <div class="section-label">Request body</div>
                 <pre>{
   <span class="key">"name"</span>: <span class="str">"Scoreboard Display"</span>,
+  <span class="key">"addonType"</span>: <span class="str">"Service"</span>,
   <span class="key">"price"</span>: <span class="num">300.00</span>,
   <span class="key">"isComplimentary"</span>: <span class="bool">false</span>
 }</pre>
@@ -1089,8 +1152,10 @@
   <span class="key">"data"</span>: {
     <span class="key">"id"</span>: <span class="num">5</span>,
     <span class="key">"name"</span>: <span class="str">"Scoreboard Display"</span>,
+    <span class="key">"addonType"</span>: <span class="str">"Service"</span>,
     <span class="key">"price"</span>: <span class="num">300.00</span>,
-    <span class="key">"isComplimentary"</span>: <span class="bool">false</span>
+    <span class="key">"isComplimentary"</span>: <span class="bool">false</span>,
+    <span class="key">"isActive"</span>: <span class="bool">true</span>
   }
 }</pre>
             </div>
@@ -1125,11 +1190,11 @@
                     </tr>
                     <tr>
                         <td><span class="code">bookingId</span></td>
-                        <td>Must belong to authenticated user, must be Confirmed status</td>
+                        <td>Must belong to authenticated user and be a confirmed booking</td>
                     </tr>
                     <tr>
                         <td><span class="code">comment</span></td>
-                        <td>Optional, max 500 chars</td>
+                        <td>Optional</td>
                     </tr>
                 </table>
             </div>
@@ -1138,7 +1203,13 @@
                 <pre>{
   <span class="key">"success"</span>: <span class="bool">true</span>,
   <span class="key">"data"</span>: {
-    <span class="key">"message"</span>: <span class="str">"Feedback submitted successfully"</span>
+    <span class="key">"id"</span>: <span class="num">7</span>,
+    <span class="key">"groundId"</span>: <span class="num">1</span>,
+    <span class="key">"groundName"</span>: <span class="str">"Eden Turf Arena"</span>,
+    <span class="key">"rating"</span>: <span class="num">5</span>,
+    <span class="key">"comment"</span>: <span class="str">"Excellent turf condition, great lighting!"</span>,
+    <span class="key">"userName"</span>: <span class="str">"Rohit Sharma"</span>,
+    <span class="key">"createdAt"</span>: <span class="str">"2026-05-17T14:30:00Z"</span>
   }
 }</pre>
             </div>
@@ -1156,19 +1227,17 @@
                 <div class="section-label">Success response <span class="status-200">200</span></div>
                 <pre>{
   <span class="key">"success"</span>: <span class="bool">true</span>,
-  <span class="key">"data"</span>: {
-    <span class="key">"groundId"</span>: <span class="num">1</span>,
-    <span class="key">"averageRating"</span>: <span class="num">4.6</span>,
-    <span class="key">"totalReviews"</span>: <span class="num">38</span>,
-    <span class="key">"reviews"</span>: [
-      {
-        <span class="key">"userName"</span>: <span class="str">"Rohit S."</span>,
-        <span class="key">"rating"</span>: <span class="num">5</span>,
-        <span class="key">"comment"</span>: <span class="str">"Excellent turf condition!"</span>,
-        <span class="key">"submittedAt"</span>: <span class="str">"2026-05-10T14:22:00Z"</span>
-      }
-    ]
-  }
+  <span class="key">"data"</span>: [
+    {
+      <span class="key">"id"</span>: <span class="num">7</span>,
+      <span class="key">"groundId"</span>: <span class="num">1</span>,
+      <span class="key">"groundName"</span>: <span class="str">"Eden Turf Arena"</span>,
+      <span class="key">"rating"</span>: <span class="num">5</span>,
+      <span class="key">"comment"</span>: <span class="str">"Excellent turf condition!"</span>,
+      <span class="key">"userName"</span>: <span class="str">"Rohit S."</span>,
+      <span class="key">"createdAt"</span>: <span class="str">"2026-05-10T14:22:00Z"</span>
+    }
+  ]
 }</pre>
             </div>
         </div>
@@ -1195,26 +1264,27 @@
             <h2>Booking flow</h2>
             <div class="flow-step">
                 <div class="step-num">1</div>
-                <div class="step-text"><strong>Browse grounds</strong><span>GET /grounds → render cards</span></div>
+                <div class="step-text"><strong>Browse grounds</strong><span>GET /api/v1/grounds → render cards</span>
+                </div>
             </div>
             <div class="flow-step">
                 <div class="step-num">2</div>
                 <div class="step-text"><strong>Select date on calendar</strong><span>GET
-                        /booking/availability?groundId=&date= → disable booked slots</span></div>
+                        /api/v1/Booking/availability?groundId=&date= → disable booked slots</span></div>
             </div>
             <div class="flow-step">
                 <div class="step-num">3</div>
-                <div class="step-text"><strong>Choose slot & addons</strong><span>GET /slots/ground/{id} + GET /addons →
-                        show pricing</span></div>
+                <div class="step-text"><strong>Choose slot & addons</strong><span>GET /api/v1/slots/ground/{id} + GET
+                        /api/v1/addons → show pricing</span></div>
             </div>
             <div class="flow-step">
                 <div class="step-num">4</div>
-                <div class="step-text"><strong>Create booking</strong><span>POST /booking → receive bookingId
+                <div class="step-text"><strong>Create booking</strong><span>POST /api/v1/Booking → receive bookingId
                         (PendingPayment)</span></div>
             </div>
             <div class="flow-step">
                 <div class="step-num">5</div>
-                <div class="step-text"><strong>Pay</strong><span>POST /payments/pay/{bookingId} → booking becomes
+                <div class="step-text"><strong>Pay</strong><span>POST /api/v1/payments/pay/{bookingId} → booking becomes
                         Confirmed</span></div>
             </div>
             <div class="flow-step">
@@ -1246,17 +1316,17 @@ if (success) localStorage.setItem('token', data.token);</pre>
     }
   });
   const json = await res.json();
-  if (!json.success) throw new Error(json.message);
+  if (!json.success) throw new Error(json.message || 'API error');
   return json.data;
 };
 
 // Usage examples:
 const grounds = await api('/grounds');
-const booking = await api('/booking', {
+const booking = await api('/Booking', {
   method: 'POST',
-  body: JSON.stringify({ groundId:1, slotId:2, bookingDate:'2026-06-01', addonIds:[1] })
+  body: JSON.stringify({ groundId:1, slotId:2, bookingDate:'2026-06-01', slotType:'Night', addonIds:[1] })
 });
-const confirmed = await api(`/payments/pay/${booking.bookingId}`, { method:'POST' });</pre>
+const confirmed = await api(`/payments/pay/${booking.id}`, { method:'POST' });</pre>
             </div>
         </div>
 
