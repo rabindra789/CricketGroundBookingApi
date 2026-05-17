@@ -18,4 +18,7 @@ public class Ground
 
     public ICollection<Slot> Slots { get; set; } = new List<Slot>();
     public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+
+    public ICollection<Feedback> Feedbacks { get; set; }
+    = new List<Feedback>();
 }

@@ -1,0 +1,699 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#1D9E75;--green-lt:#E1F5EE;--green-dk:#085041;--blue:#378ADD;--blue-lt:#E6F1FB;--amber:#EF9F27;--amber-lt:#FAEEDA;--red:#E24B4A;--red-lt:#FCEBEB;--gray:#888780;--gray-lt:#F1EFE8;--teal:#1D9E75;--purple:#534AB7;--purple-lt:#EEEDFE}
+body{font-family:var(--font-sans,"Anthropic Sans",sans-serif);font-size:14px;line-height:1.6;color:var(--color-text-primary)}
+.wrap{display:grid;grid-template-columns:220px 1fr;gap:0;min-height:600px}
+.sidebar{border-right:0.5px solid var(--color-border-tertiary);padding:12px 0;position:sticky;top:0;max-height:700px;overflow-y:auto}
+.sidebar-section{padding:6px 12px;font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-top:8px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:6px 12px;cursor:pointer;border-radius:0;font-size:13px;color:var(--color-text-secondary);transition:background .15s}
+.nav-item:hover{background:var(--color-background-secondary)}
+.nav-item.active{background:var(--color-background-secondary);color:var(--color-text-primary);font-weight:500;border-left:2px solid var(--green)}
+.method-badge{font-size:10px;font-weight:500;padding:2px 5px;border-radius:4px;flex-shrink:0;min-width:36px;text-align:center}
+.get{background:var(--blue-lt);color:#0C447C}
+.post{background:var(--green-lt);color:var(--green-dk)}
+.delete{background:var(--red-lt);color:#791F1F}
+.content{padding:20px 24px;overflow-y:auto;max-height:700px}
+.page{display:none}.page.active{display:block}
+h1{font-size:20px;font-weight:500;margin-bottom:6px}
+h2{font-size:16px;font-weight:500;margin:20px 0 8px}
+h3{font-size:14px;font-weight:500;margin:14px 0 6px}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:12px;margin-bottom:12px;font-weight:500}
+.tag-auth{background:var(--amber-lt);color:#633806}
+.tag-open{background:var(--green-lt);color:var(--green-dk)}
+.desc{color:var(--color-text-secondary);font-size:13px;margin-bottom:14px;line-height:1.6}
+.endpoint-header{display:flex;align-items:center;gap:10px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-family:var(--font-mono,"Courier New",monospace);font-size:13px}
+.section-block{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg,12px);padding:14px 16px;margin-bottom:12px}
+.section-label{font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+pre{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:12px;font-family:var(--font-mono,"Courier New",monospace);font-size:12px;overflow-x:auto;white-space:pre;line-height:1.6;margin-top:6px}
+.key{color:var(--blue)}
+.str{color:var(--green-dk)}
+.num{color:var(--amber)}
+.bool{color:var(--purple)}
+.note{background:var(--blue-lt);border-left:3px solid var(--blue);border-radius:0 6px 6px 0;padding:10px 12px;font-size:13px;color:var(--color-text-secondary);margin:10px 0}
+.warn{background:var(--amber-lt);border-left:3px solid var(--amber);border-radius:0 6px 6px 0;padding:10px 12px;font-size:13px;color:var(--color-text-secondary);margin:10px 0}
+.danger{background:var(--red-lt);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 12px;font-size:13px;color:var(--color-text-secondary);margin:10px 0}
+.try-btn{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer;color:var(--color-text-primary);transition:background .15s;margin-top:8px}
+.try-btn:hover{background:var(--color-background-secondary)}
+.response-panel{display:none;margin-top:8px}
+.response-panel.open{display:block}
+.status-200{color:var(--green-dk);font-weight:500}
+.status-err{color:var(--red);font-weight:500}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rule-card{background:var(--color-background-secondary);border-radius:8px;padding:10px 12px;font-size:13px}
+.rule-card strong{display:block;font-weight:500;margin-bottom:4px;color:var(--color-text-primary)}
+.rule-card span{color:var(--color-text-secondary)}
+.flow-step{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.step-num{width:24px;height:24px;border-radius:50%;background:var(--green-lt);color:var(--green-dk);font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-text strong{display:block;font-size:13px;font-weight:500}
+.step-text span{font-size:12px;color:var(--color-text-secondary)}
+.status-pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:12px;margin:2px 3px 2px 0}
+.sp-pending{background:var(--amber-lt);color:#633806}
+.sp-confirmed{background:var(--green-lt);color:var(--green-dk)}
+.sp-cancelled{background:var(--red-lt);color:#791F1F}
+.sp-paid{background:var(--blue-lt);color:#0C447C}
+.divider{border:none;border-top:0.5px solid var(--color-border-tertiary);margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+th{text-align:left;padding:8px 10px;background:var(--color-background-secondary);font-weight:500;font-size:12px;color:var(--color-text-secondary)}
+td{padding:7px 10px;border-top:0.5px solid var(--color-border-tertiary)}
+.code{font-family:var(--font-mono,"Courier New",monospace);background:var(--color-background-secondary);padding:1px 5px;border-radius:4px;font-size:11px}
+</style>
+
+<h2 class="sr-only" style="position:absolute;left:-9999px">Cricket Ground Booking API Documentation</h2>
+
+<div class="wrap">
+<nav class="sidebar">
+  <div style="padding:10px 14px;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:4px">
+    <div style="font-size:13px;font-weight:500">Cricket Ground Booking</div>
+    <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:2px">API v1 Reference</div>
+  </div>
+  <div class="sidebar-section">Overview</div>
+  <div class="nav-item active" onclick="show('overview',this)">Base URL & Auth</div>
+  <div class="nav-item" onclick="show('lifecycle',this)">Booking Lifecycle</div>
+  <div class="nav-item" onclick="show('errors',this)">Error Handling</div>
+  <div class="sidebar-section">Auth</div>
+  <div class="nav-item" onclick="show('register',this)"><span class="method-badge post">POST</span> Register</div>
+  <div class="nav-item" onclick="show('login',this)"><span class="method-badge post">POST</span> Login</div>
+  <div class="sidebar-section">Grounds</div>
+  <div class="nav-item" onclick="show('grounds-all',this)"><span class="method-badge get">GET</span> All Grounds</div>
+  <div class="nav-item" onclick="show('ground-id',this)"><span class="method-badge get">GET</span> Ground by ID</div>
+  <div class="sidebar-section">Slots</div>
+  <div class="nav-item" onclick="show('slots-all',this)"><span class="method-badge get">GET</span> All Slots</div>
+  <div class="nav-item" onclick="show('slots-ground',this)"><span class="method-badge get">GET</span> Slots by Ground</div>
+  <div class="sidebar-section">Bookings</div>
+  <div class="nav-item" onclick="show('booking-create',this)"><span class="method-badge post">POST</span> Create Booking</div>
+  <div class="nav-item" onclick="show('booking-mine',this)"><span class="method-badge get">GET</span> My Bookings</div>
+  <div class="nav-item" onclick="show('booking-id',this)"><span class="method-badge get">GET</span> Booking by ID</div>
+  <div class="nav-item" onclick="show('booking-cancel',this)"><span class="method-badge delete">DEL</span> Cancel Booking</div>
+  <div class="nav-item" onclick="show('availability',this)"><span class="method-badge get">GET</span> Availability</div>
+  <div class="sidebar-section">Payments</div>
+  <div class="nav-item" onclick="show('payment',this)"><span class="method-badge post">POST</span> Fake Payment</div>
+  <div class="sidebar-section">Addons</div>
+  <div class="nav-item" onclick="show('addons-all',this)"><span class="method-badge get">GET</span> All Addons</div>
+  <div class="nav-item" onclick="show('addon-create',this)"><span class="method-badge post">POST</span> Create Addon</div>
+  <div class="sidebar-section">Feedback</div>
+  <div class="nav-item" onclick="show('feedback-create',this)"><span class="method-badge post">POST</span> Submit Feedback</div>
+  <div class="nav-item" onclick="show('feedback-ground',this)"><span class="method-badge get">GET</span> Ground Feedback</div>
+  <div class="sidebar-section">Frontend Guide</div>
+  <div class="nav-item" onclick="show('frontend',this)">Integration Notes</div>
+</nav>
+
+<main class="content">
+
+<!-- OVERVIEW -->
+<div class="page active" id="page-overview">
+  <h1>Cricket Ground Booking API</h1>
+  <p class="desc">Production-ready REST API for booking cricket grounds. Built on ASP.NET Core, JWT authentication, SQL Server, and Entity Framework Core.</p>
+  <div class="section-block">
+    <div class="section-label">Base URL</div>
+    <pre>http://SERVER_IP:5107/api/v1</pre>
+  </div>
+  <div class="section-block">
+    <div class="section-label">Authentication</div>
+    <p class="desc" style="margin-bottom:10px">All protected endpoints require a Bearer token in the <span class="code">Authorization</span> header.</p>
+    <pre>Authorization: Bearer &lt;your_jwt_token&gt;</pre>
+    <div class="note" style="margin-top:10px">Tokens are issued on login. Store them in <span class="code">localStorage</span> (web) or Secure Storage / Keychain (mobile). Never embed in URLs.</div>
+  </div>
+  <div class="section-block">
+    <div class="section-label">Standard response envelope</div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: { ... }
+}</pre>
+    <pre style="margin-top:8px">{
+  <span class="key">"success"</span>: <span class="bool">false</span>,
+  <span class="key">"message"</span>: <span class="str">"Descriptive error message"</span>
+}</pre>
+  </div>
+  <div class="section-block">
+    <div class="section-label">Slot types</div>
+    <table>
+      <tr><th>Type</th><th>Description</th><th>Conflict rule</th></tr>
+      <tr><td><span class="code">Day</span></td><td>Daytime slot</td><td>Can coexist with Night</td></tr>
+      <tr><td><span class="code">Night</span></td><td>Nighttime slot</td><td>Can coexist with Day</td></tr>
+      <tr><td><span class="code">FullDay</span></td><td>Entire day</td><td>Blocks Day and Night for that date</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- LIFECYCLE -->
+<div class="page" id="page-lifecycle">
+  <h1>Booking Lifecycle</h1>
+  <p class="desc">Understanding the full lifecycle helps you build correct UI states.</p>
+  <h2>Booking status flow</h2>
+  <div class="flow-step"><div class="step-num">1</div><div class="step-text"><strong>PendingPayment</strong><span>Booking created, awaiting payment. Slot is held.</span></div></div>
+  <div class="flow-step"><div class="step-num">2</div><div class="step-text"><strong>Paid → Confirmed</strong><span>After successful payment the status becomes Confirmed automatically.</span></div></div>
+  <div class="flow-step"><div class="step-num">3</div><div class="step-text"><strong>Cancelled</strong><span>User cancels via DELETE. Cancelled bookings are ignored in conflict checks.</span></div></div>
+  <h2>Booking statuses</h2>
+  <span class="status-pill sp-pending">PendingPayment</span>
+  <span class="status-pill sp-confirmed">Confirmed</span>
+  <span class="status-pill sp-cancelled">Cancelled</span>
+  <h2>Payment statuses</h2>
+  <span class="status-pill sp-pending">PendingPayment</span>
+  <span class="status-pill sp-paid">Paid</span>
+  <span class="status-pill sp-confirmed">Confirmed</span>
+  <hr class="divider">
+  <h2>Business rules</h2>
+  <div class="grid2">
+    <div class="rule-card"><strong>FullDay blocks Day & Night</strong><span>If a FullDay booking exists on a date, no other slot type can be booked for that ground.</span></div>
+    <div class="rule-card"><strong>Day + Night coexist</strong><span>A Day and Night slot for the same ground/date can be booked independently.</span></div>
+    <div class="rule-card"><strong>No past-date booking</strong><span>The API rejects any booking for a date that has already passed.</span></div>
+    <div class="rule-card"><strong>No expired slots</strong><span>Slots that have already started/passed cannot be booked even on the current date.</span></div>
+    <div class="rule-card"><strong>Cancelled = ignored</strong><span>Cancelled bookings do not count in conflict detection, allowing re-booking of released slots.</span></div>
+    <div class="rule-card"><strong>One review per booking</strong><span>Only confirmed bookings can leave feedback, and each booking allows exactly one review.</span></div>
+  </div>
+</div>
+
+<!-- ERRORS -->
+<div class="page" id="page-errors">
+  <h1>Error handling</h1>
+  <p class="desc">All errors follow the standard envelope. HTTP status codes align with the error type.</p>
+  <table>
+    <tr><th>Scenario</th><th>HTTP</th><th>message value</th></tr>
+    <tr><td>Missing / expired JWT</td><td>401</td><td>"Unauthorized"</td></tr>
+    <tr><td>Slot conflict</td><td>400</td><td>"Slot already booked for this date"</td></tr>
+    <tr><td>FullDay conflict</td><td>400</td><td>"A FullDay booking already exists for this ground and date"</td></tr>
+    <tr><td>Past-date booking</td><td>400</td><td>"Cannot book for a past date"</td></tr>
+    <tr><td>Expired slot</td><td>400</td><td>"This slot has already expired"</td></tr>
+    <tr><td>Invalid rating</td><td>400</td><td>"Rating must be between 1 and 5"</td></tr>
+    <tr><td>Duplicate feedback</td><td>400</td><td>"Feedback already submitted for this booking"</td></tr>
+    <tr><td>Payment done already</td><td>400</td><td>"Payment already completed for this booking"</td></tr>
+    <tr><td>Not your booking</td><td>403</td><td>"You are not authorized to access this booking"</td></tr>
+    <tr><td>Resource not found</td><td>404</td><td>"Resource not found"</td></tr>
+  </table>
+  <div class="danger" style="margin-top:14px">Always check <span class="code">success === false</span> and display <span class="code">message</span> to the user. Never rely solely on HTTP status codes in mobile clients.</div>
+</div>
+
+<!-- REGISTER -->
+<div class="page" id="page-register">
+  <span class="tag tag-open">Public</span>
+  <h1>Register</h1>
+  <div class="endpoint-header"><span class="method-badge post">POST</span> /api/v1/auth/register</div>
+  <p class="desc">Creates a new user account. No authentication required.</p>
+  <div class="section-block">
+    <div class="section-label">Request body</div>
+    <pre>{
+  <span class="key">"name"</span>: <span class="str">"Rohit Sharma"</span>,
+  <span class="key">"email"</span>: <span class="str">"rohit@example.com"</span>,
+  <span class="key">"password"</span>: <span class="str">"SecurePass@123"</span>,
+  <span class="key">"phone"</span>: <span class="str">"9876543210"</span>
+}</pre>
+  </div>
+  <div class="section-block">
+    <div class="section-label">Validation rules</div>
+    <table>
+      <tr><th>Field</th><th>Rules</th></tr>
+      <tr><td><span class="code">email</span></td><td>Must be unique, valid email format</td></tr>
+      <tr><td><span class="code">password</span></td><td>Min 8 chars, one uppercase, one special char</td></tr>
+      <tr><td><span class="code">phone</span></td><td>10-digit numeric string</td></tr>
+    </table>
+  </div>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"message"</span>: <span class="str">"User registered successfully"</span>
+  }
+}</pre>
+  </div>
+  <div class="note">After registration, direct users to the login screen to obtain a JWT token.</div>
+</div>
+
+<!-- LOGIN -->
+<div class="page" id="page-login">
+  <span class="tag tag-open">Public</span>
+  <h1>Login</h1>
+  <div class="endpoint-header"><span class="method-badge post">POST</span> /api/v1/auth/login</div>
+  <p class="desc">Authenticates a user and returns a JWT token for subsequent protected calls.</p>
+  <div class="section-block">
+    <div class="section-label">Request body</div>
+    <pre>{
+  <span class="key">"email"</span>: <span class="str">"rohit@example.com"</span>,
+  <span class="key">"password"</span>: <span class="str">"SecurePass@123"</span>
+}</pre>
+  </div>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"token"</span>: <span class="str">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>,
+    <span class="key">"userId"</span>: <span class="num">1</span>,
+    <span class="key">"name"</span>: <span class="str">"Rohit Sharma"</span>,
+    <span class="key">"email"</span>: <span class="str">"rohit@example.com"</span>
+  }
+}</pre>
+  </div>
+  <div class="note"><strong>Token storage:</strong> Web — <span class="code">localStorage.setItem('token', data.token)</span> &nbsp;|&nbsp; Mobile — Keychain (iOS) / EncryptedSharedPreferences (Android).<br>Attach to every protected request: <span class="code">Authorization: Bearer {token}</span></div>
+</div>
+
+<!-- GROUNDS ALL -->
+<div class="page" id="page-grounds-all">
+  <span class="tag tag-open">Public</span>
+  <h1>All Grounds</h1>
+  <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/grounds</div>
+  <p class="desc">Returns a list of all available cricket grounds. Use this to populate ground-listing cards or a browse screen.</p>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: [
+    {
+      <span class="key">"id"</span>: <span class="num">1</span>,
+      <span class="key">"name"</span>: <span class="str">"Eden Turf Arena"</span>,
+      <span class="key">"location"</span>: <span class="str">"Salt Lake, Kolkata"</span>,
+      <span class="key">"description"</span>: <span class="str">"Premium floodlit turf with changing rooms"</span>,
+      <span class="key">"imageUrl"</span>: <span class="str">"https://cdn.example.com/grounds/1.jpg"</span>,
+      <span class="key">"pitchType"</span>: <span class="str">"Artificial"</span>,
+      <span class="key">"capacity"</span>: <span class="num">22</span>
+    }
+  ]
+}</pre>
+  </div>
+  <div class="note">Frontend: render each item as a card with name, location, image, and a "Book Now" CTA linking to the ground detail page.</div>
+</div>
+
+<!-- GROUND BY ID -->
+<div class="page" id="page-ground-id">
+  <span class="tag tag-open">Public</span>
+  <h1>Ground by ID</h1>
+  <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/grounds/{id}</div>
+  <p class="desc">Returns full details for a single ground including all turf metadata. Use on the ground detail / booking screen.</p>
+  <div class="section-block">
+    <div class="section-label">Path parameter</div>
+    <table><tr><th>Param</th><th>Type</th><th>Description</th></tr><tr><td><span class="code">id</span></td><td>integer</td><td>Ground ID</td></tr></table>
+  </div>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"id"</span>: <span class="num">1</span>,
+    <span class="key">"name"</span>: <span class="str">"Eden Turf Arena"</span>,
+    <span class="key">"location"</span>: <span class="str">"Salt Lake, Kolkata"</span>,
+    <span class="key">"description"</span>: <span class="str">"Premium floodlit turf"</span>,
+    <span class="key">"imageUrl"</span>: <span class="str">"https://cdn.example.com/grounds/1.jpg"</span>,
+    <span class="key">"pitchType"</span>: <span class="str">"Artificial"</span>,
+    <span class="key">"capacity"</span>: <span class="num">22</span>,
+    <span class="key">"amenities"</span>: [<span class="str">"Floodlights"</span>, <span class="str">"Changing Room"</span>, <span class="str">"Parking"</span>]
+  }
+}</pre>
+  </div>
+</div>
+
+<!-- SLOTS ALL -->
+<div class="page" id="page-slots-all">
+  <span class="tag tag-open">Public</span>
+  <h1>All Slots</h1>
+  <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/slots</div>
+  <p class="desc">Returns all slot definitions. Each slot has a type (Day/Night/FullDay), timing, and price.</p>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: [
+    {
+      <span class="key">"id"</span>: <span class="num">1</span>,
+      <span class="key">"groundId"</span>: <span class="num">1</span>,
+      <span class="key">"slotType"</span>: <span class="str">"Day"</span>,
+      <span class="key">"startTime"</span>: <span class="str">"06:00"</span>,
+      <span class="key">"endTime"</span>: <span class="str">"14:00"</span>,
+      <span class="key">"price"</span>: <span class="num">1500.00</span>
+    },
+    {
+      <span class="key">"id"</span>: <span class="num">2</span>,
+      <span class="key">"groundId"</span>: <span class="num">1</span>,
+      <span class="key">"slotType"</span>: <span class="str">"Night"</span>,
+      <span class="key">"startTime"</span>: <span class="str">"18:00"</span>,
+      <span class="key">"endTime"</span>: <span class="str">"23:59"</span>,
+      <span class="key">"price"</span>: <span class="num">2000.00</span>
+    }
+  ]
+}</pre>
+  </div>
+</div>
+
+<!-- SLOTS BY GROUND -->
+<div class="page" id="page-slots-ground">
+  <span class="tag tag-open">Public</span>
+  <h1>Slots by Ground</h1>
+  <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/slots/ground/{groundId}</div>
+  <p class="desc">Returns only the slots for a specific ground. Use this on the booking screen to show which slot types are available with their pricing.</p>
+  <div class="section-block">
+    <div class="section-label">Path parameter</div>
+    <table><tr><th>Param</th><th>Type</th></tr><tr><td><span class="code">groundId</span></td><td>integer</td></tr></table>
+  </div>
+  <div class="note">Frontend: after the user selects a date, call <span class="code">/availability</span> and cross-reference to disable already-booked slots in the UI. Display price prominently on each slot card.</div>
+</div>
+
+<!-- BOOKING CREATE -->
+<div class="page" id="page-booking-create">
+  <span class="tag tag-auth">Protected</span>
+  <h1>Create Booking</h1>
+  <div class="endpoint-header"><span class="method-badge post">POST</span> /api/v1/booking</div>
+  <p class="desc">Creates a new booking. Returns a booking in <span class="code">PendingPayment</span> status. The slot is held until payment is made.</p>
+  <div class="section-block">
+    <div class="section-label">Request body</div>
+    <pre>{
+  <span class="key">"groundId"</span>: <span class="num">1</span>,
+  <span class="key">"slotId"</span>: <span class="num">2</span>,
+  <span class="key">"bookingDate"</span>: <span class="str">"2026-06-01"</span>,
+  <span class="key">"addonIds"</span>: [<span class="num">1</span>, <span class="num">3</span>]
+}</pre>
+  </div>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"bookingId"</span>: <span class="num">42</span>,
+    <span class="key">"status"</span>: <span class="str">"PendingPayment"</span>,
+    <span class="key">"paymentStatus"</span>: <span class="str">"PendingPayment"</span>,
+    <span class="key">"groundName"</span>: <span class="str">"Eden Turf Arena"</span>,
+    <span class="key">"slotType"</span>: <span class="str">"Night"</span>,
+    <span class="key">"bookingDate"</span>: <span class="str">"2026-06-01"</span>,
+    <span class="key">"totalAmount"</span>: <span class="num">2600.00</span>,
+    <span class="key">"addons"</span>: [
+      { <span class="key">"name"</span>: <span class="str">"Cricket Kit"</span>, <span class="key">"price"</span>: <span class="num">300.00</span> },
+      { <span class="key">"name"</span>: <span class="str">"Scoreboard"</span>, <span class="key">"price"</span>: <span class="num">300.00</span> }
+    ]
+  }
+}</pre>
+  </div>
+  <div class="warn">After creating a booking, immediately redirect to the payment screen with the <span class="code">bookingId</span>.</div>
+</div>
+
+<!-- MY BOOKINGS -->
+<div class="page" id="page-booking-mine">
+  <span class="tag tag-auth">Protected</span>
+  <h1>My Bookings</h1>
+  <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/booking/my-bookings</div>
+  <p class="desc">Returns all bookings for the authenticated user. Use this for the user's booking history / dashboard screen.</p>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: [
+    {
+      <span class="key">"bookingId"</span>: <span class="num">42</span>,
+      <span class="key">"groundName"</span>: <span class="str">"Eden Turf Arena"</span>,
+      <span class="key">"slotType"</span>: <span class="str">"Night"</span>,
+      <span class="key">"bookingDate"</span>: <span class="str">"2026-06-01"</span>,
+      <span class="key">"status"</span>: <span class="str">"Confirmed"</span>,
+      <span class="key">"paymentStatus"</span>: <span class="str">"Paid"</span>,
+      <span class="key">"totalAmount"</span>: <span class="num">2600.00</span>
+    }
+  ]
+}</pre>
+  </div>
+  <div class="note">Frontend: group by <span class="code">status</span> — show "Upcoming" for Confirmed, "Pending Payment" as a CTA, and "Past" for expired confirmed bookings.</div>
+</div>
+
+<!-- BOOKING BY ID -->
+<div class="page" id="page-booking-id">
+  <span class="tag tag-auth">Protected</span>
+  <h1>Booking by ID</h1>
+  <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/booking/{id}</div>
+  <p class="desc">Returns full details for a single booking. Only accessible by the booking owner.</p>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"bookingId"</span>: <span class="num">42</span>,
+    <span class="key">"groundId"</span>: <span class="num">1</span>,
+    <span class="key">"groundName"</span>: <span class="str">"Eden Turf Arena"</span>,
+    <span class="key">"location"</span>: <span class="str">"Salt Lake, Kolkata"</span>,
+    <span class="key">"slotType"</span>: <span class="str">"Night"</span>,
+    <span class="key">"startTime"</span>: <span class="str">"18:00"</span>,
+    <span class="key">"endTime"</span>: <span class="str">"23:59"</span>,
+    <span class="key">"bookingDate"</span>: <span class="str">"2026-06-01"</span>,
+    <span class="key">"status"</span>: <span class="str">"Confirmed"</span>,
+    <span class="key">"paymentStatus"</span>: <span class="str">"Paid"</span>,
+    <span class="key">"transactionId"</span>: <span class="str">"TXN-20260601-0042"</span>,
+    <span class="key">"totalAmount"</span>: <span class="num">2600.00</span>,
+    <span class="key">"addons"</span>: [
+      { <span class="key">"name"</span>: <span class="str">"Cricket Kit"</span>, <span class="key">"snapshotPrice"</span>: <span class="num">300.00</span> }
+    ]
+  }
+}</pre>
+  </div>
+</div>
+
+<!-- CANCEL BOOKING -->
+<div class="page" id="page-booking-cancel">
+  <span class="tag tag-auth">Protected</span>
+  <h1>Cancel Booking</h1>
+  <div class="endpoint-header"><span class="method-badge delete">DELETE</span> /api/v1/booking/{id}</div>
+  <p class="desc">Cancels the specified booking. Only the booking owner can cancel. Cancelled bookings are ignored in future conflict checks.</p>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"message"</span>: <span class="str">"Booking cancelled successfully"</span>
+  }
+}</pre>
+  </div>
+  <div class="danger">Show a confirmation dialog before calling this endpoint. Cancellation may not be reversible depending on business policy.</div>
+</div>
+
+<!-- AVAILABILITY -->
+<div class="page" id="page-availability">
+  <span class="tag tag-open">Public</span>
+  <h1>Check Availability</h1>
+  <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/booking/availability?groundId=1&date=2026-05-12</div>
+  <p class="desc">Returns which slots are already booked for a ground on a given date. Use this to disable unavailable slot options in the UI before the user clicks "Book".</p>
+  <div class="section-block">
+    <div class="section-label">Query parameters</div>
+    <table>
+      <tr><th>Param</th><th>Type</th><th>Example</th></tr>
+      <tr><td><span class="code">groundId</span></td><td>integer</td><td>1</td></tr>
+      <tr><td><span class="code">date</span></td><td>string (ISO 8601)</td><td>2026-05-12</td></tr>
+    </table>
+  </div>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"date"</span>: <span class="str">"2026-05-12"</span>,
+    <span class="key">"groundId"</span>: <span class="num">1</span>,
+    <span class="key">"bookedSlots"</span>: [
+      { <span class="key">"slotId"</span>: <span class="num">2</span>, <span class="key">"slotType"</span>: <span class="str">"Night"</span> }
+    ],
+    <span class="key">"isFullDayBooked"</span>: <span class="bool">false</span>
+  }
+}</pre>
+  </div>
+  <div class="note">Frontend flow: call availability when the user selects a date. If <span class="code">isFullDayBooked</span> is true, disable all slot buttons. Otherwise disable only the <span class="code">bookedSlots</span> entries.</div>
+</div>
+
+<!-- PAYMENT -->
+<div class="page" id="page-payment">
+  <span class="tag tag-auth">Protected</span>
+  <h1>Fake Payment</h1>
+  <div class="endpoint-header"><span class="method-badge post">POST</span> /api/v1/payments/pay/{bookingId}</div>
+  <p class="desc">Simulates payment for a booking. On success, the booking status transitions from <span class="code">PendingPayment</span> to <span class="code">Confirmed</span> and a transaction ID is generated.</p>
+  <div class="section-block">
+    <div class="section-label">Path parameter</div>
+    <table><tr><th>Param</th><th>Type</th></tr><tr><td><span class="code">bookingId</span></td><td>integer</td></tr></table>
+  </div>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"bookingId"</span>: <span class="num">42</span>,
+    <span class="key">"status"</span>: <span class="str">"Confirmed"</span>,
+    <span class="key">"paymentStatus"</span>: <span class="str">"Paid"</span>,
+    <span class="key">"transactionId"</span>: <span class="str">"TXN-20260601-0042"</span>,
+    <span class="key">"paidAt"</span>: <span class="str">"2026-05-17T10:30:00Z"</span>
+  }
+}</pre>
+  </div>
+  <div class="note">After a successful payment response, redirect to a booking confirmation screen showing the <span class="code">transactionId</span> and a summary card.</div>
+</div>
+
+<!-- ADDONS ALL -->
+<div class="page" id="page-addons-all">
+  <span class="tag tag-open">Public</span>
+  <h1>All Addons</h1>
+  <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/addons</div>
+  <p class="desc">Returns all available addons. Addon prices are snapshotted at booking time, so invoice totals remain accurate even if prices change later.</p>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: [
+    {
+      <span class="key">"id"</span>: <span class="num">1</span>,
+      <span class="key">"name"</span>: <span class="str">"Cricket Kit (Bat, Pads, Gloves)"</span>,
+      <span class="key">"price"</span>: <span class="num">300.00</span>,
+      <span class="key">"isComplimentary"</span>: <span class="bool">false</span>
+    },
+    {
+      <span class="key">"id"</span>: <span class="num">4</span>,
+      <span class="key">"name"</span>: <span class="str">"Water Bottles"</span>,
+      <span class="key">"price"</span>: <span class="num">0.00</span>,
+      <span class="key">"isComplimentary"</span>: <span class="bool">true</span>
+    }
+  ]
+}</pre>
+  </div>
+  <div class="note">Frontend: show complimentary addons as "Free" with a checkmark, and paid addons with a checkbox + price. Pass selected IDs as <span class="code">addonIds</span> in the booking request.</div>
+</div>
+
+<!-- ADDON CREATE -->
+<div class="page" id="page-addon-create">
+  <span class="tag tag-auth">Admin</span>
+  <h1>Create Addon</h1>
+  <div class="endpoint-header"><span class="method-badge post">POST</span> /api/v1/addons</div>
+  <p class="desc">Admin-only endpoint to add a new addon. Requires an admin-scoped JWT.</p>
+  <div class="section-block">
+    <div class="section-label">Request body</div>
+    <pre>{
+  <span class="key">"name"</span>: <span class="str">"Scoreboard Display"</span>,
+  <span class="key">"price"</span>: <span class="num">300.00</span>,
+  <span class="key">"isComplimentary"</span>: <span class="bool">false</span>
+}</pre>
+  </div>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"id"</span>: <span class="num">5</span>,
+    <span class="key">"name"</span>: <span class="str">"Scoreboard Display"</span>,
+    <span class="key">"price"</span>: <span class="num">300.00</span>,
+    <span class="key">"isComplimentary"</span>: <span class="bool">false</span>
+  }
+}</pre>
+  </div>
+</div>
+
+<!-- FEEDBACK CREATE -->
+<div class="page" id="page-feedback-create">
+  <span class="tag tag-auth">Protected</span>
+  <h1>Submit Feedback</h1>
+  <div class="endpoint-header"><span class="method-badge post">POST</span> /api/v1/feedback</div>
+  <p class="desc">Submits a rating and comment for a completed booking. Only <span class="code">Confirmed</span> bookings can be reviewed, and each booking allows exactly one review.</p>
+  <div class="section-block">
+    <div class="section-label">Request body</div>
+    <pre>{
+  <span class="key">"bookingId"</span>: <span class="num">42</span>,
+  <span class="key">"rating"</span>: <span class="num">5</span>,
+  <span class="key">"comment"</span>: <span class="str">"Excellent turf condition, great lighting!"</span>
+}</pre>
+  </div>
+  <div class="section-block">
+    <div class="section-label">Validation rules</div>
+    <table>
+      <tr><th>Field</th><th>Rules</th></tr>
+      <tr><td><span class="code">rating</span></td><td>Integer 1–5 inclusive</td></tr>
+      <tr><td><span class="code">bookingId</span></td><td>Must belong to authenticated user, must be Confirmed status</td></tr>
+      <tr><td><span class="code">comment</span></td><td>Optional, max 500 chars</td></tr>
+    </table>
+  </div>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"message"</span>: <span class="str">"Feedback submitted successfully"</span>
+  }
+}</pre>
+  </div>
+</div>
+
+<!-- FEEDBACK GROUND -->
+<div class="page" id="page-feedback-ground">
+  <span class="tag tag-open">Public</span>
+  <h1>Ground Feedback</h1>
+  <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/feedback/ground/{groundId}</div>
+  <p class="desc">Returns all reviews for a specific ground. Use on the ground detail page to show ratings and comments.</p>
+  <div class="section-block">
+    <div class="section-label">Success response <span class="status-200">200</span></div>
+    <pre>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"groundId"</span>: <span class="num">1</span>,
+    <span class="key">"averageRating"</span>: <span class="num">4.6</span>,
+    <span class="key">"totalReviews"</span>: <span class="num">38</span>,
+    <span class="key">"reviews"</span>: [
+      {
+        <span class="key">"userName"</span>: <span class="str">"Rohit S."</span>,
+        <span class="key">"rating"</span>: <span class="num">5</span>,
+        <span class="key">"comment"</span>: <span class="str">"Excellent turf condition!"</span>,
+        <span class="key">"submittedAt"</span>: <span class="str">"2026-05-10T14:22:00Z"</span>
+      }
+    ]
+  }
+}</pre>
+  </div>
+</div>
+
+<!-- FRONTEND -->
+<div class="page" id="page-frontend">
+  <h1>Frontend integration guide</h1>
+  <h2>Authentication flow</h2>
+  <div class="flow-step"><div class="step-num">1</div><div class="step-text"><strong>Register / Login</strong><span>Store the JWT token securely. Set as default header for all API calls.</span></div></div>
+  <div class="flow-step"><div class="step-num">2</div><div class="step-text"><strong>Protected routes</strong><span>Check for token presence on route change. If absent, redirect to login.</span></div></div>
+  <div class="flow-step"><div class="step-num">3</div><div class="step-text"><strong>Token expiry</strong><span>On 401 response, clear token and redirect to login.</span></div></div>
+  <h2>Booking flow</h2>
+  <div class="flow-step"><div class="step-num">1</div><div class="step-text"><strong>Browse grounds</strong><span>GET /grounds → render cards</span></div></div>
+  <div class="flow-step"><div class="step-num">2</div><div class="step-text"><strong>Select date on calendar</strong><span>GET /booking/availability?groundId=&date= → disable booked slots</span></div></div>
+  <div class="flow-step"><div class="step-num">3</div><div class="step-text"><strong>Choose slot & addons</strong><span>GET /slots/ground/{id} + GET /addons → show pricing</span></div></div>
+  <div class="flow-step"><div class="step-num">4</div><div class="step-text"><strong>Create booking</strong><span>POST /booking → receive bookingId (PendingPayment)</span></div></div>
+  <div class="flow-step"><div class="step-num">5</div><div class="step-text"><strong>Pay</strong><span>POST /payments/pay/{bookingId} → booking becomes Confirmed</span></div></div>
+  <div class="flow-step"><div class="step-num">6</div><div class="step-text"><strong>Confirm screen</strong><span>Show transactionId, summary card, and optional feedback CTA</span></div></div>
+  <h2>JavaScript fetch example</h2>
+  <div class="section-block">
+    <div class="section-label">Login and store token</div>
+    <pre>const res = await fetch('http://SERVER_IP:5107/api/v1/auth/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email, password })
+});
+const { success, data } = await res.json();
+if (success) localStorage.setItem('token', data.token);</pre>
+  </div>
+  <div class="section-block">
+    <div class="section-label">Authenticated request helper</div>
+    <pre>const api = async (path, options = {}) => {
+  const token = localStorage.getItem('token');
+  const res = await fetch(`http://SERVER_IP:5107/api/v1${path}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      ...options.headers
+    }
+  });
+  const json = await res.json();
+  if (!json.success) throw new Error(json.message);
+  return json.data;
+};
+
+// Usage examples:
+const grounds = await api('/grounds');
+const booking = await api('/booking', {
+  method: 'POST',
+  body: JSON.stringify({ groundId:1, slotId:2, bookingDate:'2026-06-01', addonIds:[1] })
+});
+const confirmed = await api(`/payments/pay/${booking.bookingId}`, { method:'POST' });</pre>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+function show(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  el.classList.add('active');
+}
+</script>

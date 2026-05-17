@@ -30,4 +30,6 @@ public class Booking
 
     public ICollection<BookingAddon> BookingAddons { get; set; } = new List<BookingAddon>();
     public Payment? Payment { get; set; }
+
+    public Feedback? Feedback { get; set; }
 }

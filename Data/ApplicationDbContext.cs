@@ -17,6 +17,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<BookingAddon> BookingAddons => Set<BookingAddon>();
     public DbSet<Package> Packages => Set<Package>();
     public DbSet<Payment> Payments => Set<Payment>();
+    public DbSet<Feedback> Feedbacks { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)

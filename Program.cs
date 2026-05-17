@@ -1,4 +1,5 @@
 using System.Text;
+using System.Reflection;
 using CricketGroundBookingApi.Data;
 using Microsoft.EntityFrameworkCore;
 using CricketGroundBookingApi.Interfaces;
@@ -23,6 +24,14 @@ builder.Services.AddSwaggerGen(options =>
         Title = "Cricket Ground Booking API",
         Version = "v1"
     });
+
+    var xmlFilename =
+        $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+
+    options.IncludeXmlComments(
+        Path.Combine(AppContext.BaseDirectory, xmlFilename)
+    );
+
 
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -59,6 +68,8 @@ builder.Services.AddScoped<IGroundService, GroundService>();
 builder.Services.AddScoped<ISlotService, SlotService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IAddonService, AddonService>();
+builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 
 var jwtKey = builder.Configuration["Jwt:Key"];
 
@@ -87,7 +98,19 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(options =>
+{
+    options.HeadContent = @"<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        var btn = document.createElement('a');
+        btn.textContent = 'Open Docs';
+        btn.href = '/docs/index.html';
+        btn.target = '_blank';
+        btn.style.cssText = 'position:absolute;top:100px;right:16px;z-index:10000;background:#1f73b7;color:#fff;padding:8px 14px;border-radius:6px;text-decoration:none;font-weight:600;';
+        document.body.appendChild(btn);
+    });
+</script>";
+});
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
@@ -97,6 +120,8 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 });
 
 app.UseHttpsRedirection();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

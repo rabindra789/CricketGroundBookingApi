@@ -93,6 +93,36 @@ public class BookingService : IBookingService
         decimal baseAmount = slot.BasePrice;
         decimal addonAmount = 0;
 
+        var bookingAddons = new List<BookingAddon>();
+
+        if (request.AddonIds != null && request.AddonIds.Any())
+        {
+            var addons = await _context.Addons
+                .Where(a =>
+                    request.AddonIds.Contains(a.Id) && a.IsActive
+                )
+                .ToListAsync();
+
+            foreach (var addon in addons)
+            {
+                decimal totalPrice = addon.IsComplimentary
+                    ? 0
+                    : addon.Price;
+
+                addonAmount += totalPrice;
+
+                bookingAddons.Add(new BookingAddon
+                {
+                    AddonId = addon.Id,
+                    ItemName = addon.Name,
+                    UnitPrice = addon.Price,
+                    Quantity = 1,
+                    TotalPrice = totalPrice,
+                    IsComplimentary = addon.IsComplimentary
+                });
+            }
+        }
+
         var booking = new Booking
         {
             UserId = userId,
@@ -110,6 +140,18 @@ public class BookingService : IBookingService
         _context.Bookings.Add(booking);
 
         await _context.SaveChangesAsync();
+
+        if (bookingAddons.Any())
+        {
+            foreach (var bookingAddon in bookingAddons)
+            {
+                bookingAddon.BookingId = booking.Id;
+            }
+
+            _context.BookingAddons.AddRange(bookingAddons);
+
+            await _context.SaveChangesAsync();
+        }
 
         return new BookingResponse
         {

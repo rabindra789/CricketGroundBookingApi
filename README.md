@@ -39,10 +39,10 @@ A backend API for cricket ground booking management built with ASP.NET Core Web 
 - Automatic database migrations on startup
 - Docker production container support
 - Payment APIs
+- Addon management APIs
 
 ### In Progress
 
-- Addon management APIs
 - Booking availability / calendar filtering
 - Enhanced admin dashboard endpoints
 
@@ -50,7 +50,6 @@ A backend API for cricket ground booking management built with ASP.NET Core Web 
 
 - Pricing engine and rate calculation
 - Admin analytics dashboard
-- Email notifications
 - Full booking history export
 
 ## Requirements
@@ -85,20 +84,36 @@ A backend API for cricket ground booking management built with ASP.NET Core Web 
 - Fix: Set `ASPNETCORE_URLS="http://0.0.0.0:5107"` and map the port in Docker.
 - Reference: https://learn.microsoft.com/aspnet/core/fundamentals/servers/kestrel
 
+### 5. Static addon pricing issue
+
+- If addon prices change later, old bookings should still preserve original pricing.
+- Fix: BookingAddon stores:
+    - item name
+    - unit price
+    - quantity
+    - total price
+    - complimentary status
+
+    This creates immutable booking history and proper invoice support.
+
+- Reference: This follows the snapshot pricing pattern commonly used in ecommerce and booking systems, where transactional records preserve historical pricing data even if master records change later.
+
 ## Local Development
 
 1. Configure your local database connection in `appsettings.Development.json` or via `DB_CONNECTION_STRING`.
 
 2. Run the API:
 
+- For development server with development settings:
+
 ```bash
-ASPNETCORE_ENVIRONMENT=Development ASPNETCORE_URLS="http://0.0.0.0:5107" dotnet run --no-launch-profile
+ASPNETCORE_ENVIRONMENT=Development ASPNETCORE_URLS="http://0.0.0.0:5106" dotnet run --no-launch-profile
 ```
 
 3. Open Swagger at:
 
 ```text
-http://localhost:5107/swagger
+http://localhost:5106/swagger
 ```
 
 ## Docker Deployment
@@ -157,6 +172,13 @@ DB_CONNECTION_STRING
 
 ## API Endpoints
 
+### OpenAPI / Swagger
+
+- `openapi: 3.0.1`
+- Title: `Cricket Ground Booking API`
+- Version: `v1`
+- Swagger UI is available at `/swagger` when the API is running.
+
 ### Authentication
 
 - `POST /api/v1/auth/register`
@@ -169,6 +191,11 @@ DB_CONNECTION_STRING
 - `GET /api/v1/slots`
 - `GET /api/v1/slots/ground/{groundId}`
 - `GET /api/v1/slots/{id}`
+
+### Addon APIs
+
+- `GET /api/v1/addons`
+- `POST /api/v1/addons`
 
 ### Admin APIs
 
@@ -185,11 +212,16 @@ Requires `Authorization: Bearer <token>` and role `Admin`.
 
 Requires authenticated user.
 
-- `POST /api/booking`
-- `GET /api/booking/my`
-- `GET /api/booking/{id}`
-- `DELETE /api/booking/{id}`
-- `GET /api/booking/availability?groundId={groundId}&date={yyyy-MM-dd}`
+- `POST /api/v1/Booking`
+- `GET /api/v1/Booking/my`
+- `GET /api/v1/Booking/{id}`
+- `DELETE /api/v1/Booking/{id}`
+- `GET /api/v1/Booking/availability?groundId={groundId}&date={yyyy-MM-dd}`
+
+### Feedback APIs
+
+- `POST /api/v1/feedback`
+- `GET /api/v1/feedback/ground/{groundId}`
 
 ### Payment APIs
 

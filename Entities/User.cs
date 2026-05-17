@@ -17,4 +17,7 @@ public class User
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     public ICollection<Booking> Bookings {get; set;} = new List<Booking>();
+    
+    public ICollection<Feedback> Feedbacks { get; set; }
+    = new List<Feedback>();
 }
