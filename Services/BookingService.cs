@@ -229,6 +229,70 @@ public class BookingService : IBookingService
         };
     }
 
+    public async Task<BookingInvoiceResponse?> GetBookingInvoiceByIdAsync(
+        long bookingId,
+        long? userId = null
+    )
+    {
+        var query = _context.Bookings
+            .AsNoTracking()
+            .Include(b => b.User)
+            .Include(b => b.Ground)
+            .Include(b => b.Slot)
+            .Include(b => b.Payment)
+            .Include(b => b.BookingAddons)
+                .ThenInclude(ba => ba.Addon)
+            .AsQueryable();
+
+        if (userId.HasValue)
+        {
+            query = query.Where(b => b.UserId == userId.Value);
+        }
+
+        var booking = await query
+            .FirstOrDefaultAsync(b => b.Id == bookingId);
+
+        if (booking == null)
+        {
+            return null;
+        }
+
+        return new BookingInvoiceResponse
+        {
+            Id = booking.Id,
+            GroundId = booking.GroundId,
+            GroundName = booking.Ground.Name,
+            UserId = booking.UserId,
+            UserName = booking.User.FullName,
+            UserEmail = booking.User.Email,
+            UserPhone = booking.User.Phone,
+            BookingDate = booking.BookingDate,
+            SlotType = booking.SlotType,
+            StartTime = booking.Slot.StartTime,
+            EndTime = booking.Slot.EndTime,
+            BaseAmount = booking.BaseAmount,
+            AddonAmount = booking.AddonAmount,
+            TotalAmount = booking.TotalAmount,
+            BookingStatus = booking.Status,
+            PaymentStatus = booking.PaymentStatus,
+            PaymentReference = booking.Payment?.PaymentReference ?? string.Empty,
+            PaidAt = booking.Payment?.PaidAt,
+            CreatedAt = booking.CreatedAt,
+            UpdatedAt = booking.UpdatedAt,
+            Addons = booking.BookingAddons
+                .Select(ba => new BookingInvoiceAddonResponse
+                {
+                    Id = ba.Id,
+                    Name = ba.Addon.Name,
+                    Quantity = ba.Quantity,
+                    UnitPrice = ba.UnitPrice,
+                    TotalPrice = ba.TotalPrice,
+                    IsComplimentary = ba.IsComplimentary
+                })
+                .ToList()
+        };
+    }
+
     public async Task<bool> CancelBookingAsync(
         long bookingId,
         long userId

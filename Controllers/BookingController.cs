@@ -98,6 +98,44 @@ public class BookingController : ControllerBase
         });
     }
 
+    /// <summary>
+    /// Returns invoice details for a booking.
+    /// </summary>
+    /// <param name="id">Booking identifier.</param>
+    [HttpGet("/api/v1/bookings/invoice/{id}")]
+    public async Task<IActionResult> GetBookingInvoice(long id)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (userIdClaim == null)
+        {
+            return Unauthorized();
+        }
+
+        long userId = long.Parse(userIdClaim.Value);
+        var isAdmin = User.IsInRole("Admin");
+
+        var invoice = await _bookingService.GetBookingInvoiceByIdAsync(
+            id,
+            isAdmin ? null : userId
+        );
+
+        if (invoice == null)
+        {
+            return NotFound(new
+            {
+                success = false,
+                message = "Invoice not found"
+            });
+        }
+
+        return Ok(new
+        {
+            success = true,
+            data = invoice
+        });
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> CancelBooking(long id)
     {

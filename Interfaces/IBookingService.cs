@@ -18,6 +18,11 @@ public interface IBookingService
         long userId
     );
 
+    Task<BookingInvoiceResponse?> GetBookingInvoiceByIdAsync(
+        long bookingId,
+        long? userId = null
+    );
+
     Task<bool> CancelBookingAsync(
         long bookingId,
         long userId
