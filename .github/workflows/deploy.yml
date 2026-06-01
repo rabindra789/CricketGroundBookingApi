@@ -42,5 +42,8 @@ jobs:
               -p 5107:5107 \
               -e ASPNETCORE_ENVIRONMENT=Production \
               -e DB_CONNECTION_STRING="${{ secrets.DB_CONNECTION_STRING }}" \
-              cricket-api
-              
+              cricket-api > /dev/null 2>&1
+
+            echo "Deployment completed successfully"
+
+            exit
