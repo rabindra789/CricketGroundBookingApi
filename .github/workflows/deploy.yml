@@ -28,22 +28,10 @@ jobs:
 
             docker build -t cricket-api .
 
-            docker run --rm \
-              --network cricket-network \
-              -e ASPNETCORE_ENVIRONMENT=Production \
-              -e DB_CONNECTION_STRING="${{ secrets.DB_CONNECTION_STRING }}" \
-              cricket-api \
-              dotnet ef database update
-
             docker run -d \
               --name cricket-api \
               --network cricket-network \
               --restart unless-stopped \
               -p 5107:5107 \
-              -e ASPNETCORE_ENVIRONMENT=Production \
               -e DB_CONNECTION_STRING="${{ secrets.DB_CONNECTION_STRING }}" \
-              cricket-api > /dev/null 2>&1
-
-            echo "Deployment completed successfully"
-
-            exit
+              cricket-api
