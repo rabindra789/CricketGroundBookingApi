@@ -6,6 +6,7 @@ public class Addon
 
     public string Name { get; set; } = string.Empty; // Breakfast, Snacks, Lunch
     public string AddonType { get; set; } = string.Empty; // Food / Package
+    public string SportType { get; set; } = "Multi-Sport";
 
     public decimal Price { get; set; }
 

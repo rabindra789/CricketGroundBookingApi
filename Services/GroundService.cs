@@ -20,6 +20,7 @@ public class GroundService : IGroundService
         var ground = new Ground
         {
             Name = request.Name,
+            SportType = NormalizeSportType(request.SportType),
             Description = request.Description,
             Address = request.Address,
             Latitude = request.Latitude,
@@ -58,6 +59,7 @@ public class GroundService : IGroundService
             return null;
 
         ground.Name = request.Name;
+        ground.SportType = NormalizeSportType(request.SportType);
         ground.Description = request.Description;
         ground.Address = request.Address;
         ground.Latitude = request.Latitude;
@@ -82,5 +84,12 @@ public class GroundService : IGroundService
         await _context.SaveChangesAsync();
 
         return true;
+    }
+
+    private static string NormalizeSportType(string? sportType)
+    {
+        return string.IsNullOrWhiteSpace(sportType)
+            ? "Multi-Sport"
+            : sportType.Trim();
     }
 }

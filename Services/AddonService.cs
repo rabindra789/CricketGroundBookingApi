@@ -22,6 +22,7 @@ public class AddonService : IAddonService
             Id = addon.Id,
             Name = addon.Name,
             AddonType = addon.AddonType,
+            SportType = addon.SportType,
             Price = addon.Price,
             IsComplimentary = addon.IsComplimentary,
             IsActive = addon.IsActive
@@ -36,6 +37,7 @@ public class AddonService : IAddonService
         {
             Name = request.Name,
             AddonType = request.AddonType,
+            SportType = NormalizeSportType(request.SportType),
             Price = request.Price,
             IsComplimentary = request.IsComplimentary,
             IsActive = true
@@ -48,13 +50,32 @@ public class AddonService : IAddonService
         return MapToResponse(addon);
     }
 
-    public async Task<List<AddonResponse>> GetAllAsync()
+    public async Task<List<AddonResponse>> GetAllAsync(string? sportType = null)
     {
-        var addons = await _context.Addons
-            .Where(a => a.IsActive)
+        var normalizedSportType = NormalizeSportType(sportType);
+
+        var query = _context.Addons
+            .Where(a => a.IsActive);
+
+        if (!string.IsNullOrWhiteSpace(sportType))
+        {
+            query = query.Where(a =>
+                a.SportType == normalizedSportType ||
+                a.SportType == "Multi-Sport"
+            );
+        }
+
+        var addons = await query
             .OrderBy(a => a.Name)
             .ToListAsync();
 
         return addons.Select(MapToResponse).ToList();
+    }
+
+    private static string NormalizeSportType(string? sportType)
+    {
+        return string.IsNullOrWhiteSpace(sportType)
+            ? "Multi-Sport"
+            : sportType.Trim();
     }
 }

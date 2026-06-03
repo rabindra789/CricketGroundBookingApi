@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Cricket Ground Booking API",
+        Title = "Sports Ground Booking API",
         Version = "v1"
     });
 

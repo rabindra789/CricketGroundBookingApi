@@ -453,12 +453,12 @@
     }
 </style>
 
-<h2 class="sr-only" style="position:absolute;left:-9999px">Cricket Ground Booking API Documentation</h2>
+<h2 class="sr-only" style="position:absolute;left:-9999px">Sports Ground Booking API Documentation</h2>
 
 <div class="wrap">
     <nav class="sidebar">
         <div style="padding:10px 14px;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:4px">
-            <div style="font-size:13px;font-weight:500">Cricket Ground Booking</div>
+            <div style="font-size:13px;font-weight:500">Sports Ground Booking</div>
             <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:2px">API v1 Reference</div>
         </div>
         <div class="sidebar-section">Overview</div>
@@ -509,8 +509,9 @@
 
         <!-- OVERVIEW -->
         <div class="page active" id="page-overview">
-            <h1>Cricket Ground Booking API</h1>
-            <p class="desc">Production-ready REST API for booking cricket grounds. Built on ASP.NET Core, JWT
+            <h1>Sports Ground Booking API</h1>
+            <p class="desc">Production-ready REST API for booking sports grounds across cricket, football, badminton,
+                tennis, and more. Built on ASP.NET Core, JWT
                 authentication, SQL Server, and Entity Framework Core.</p>
             <div class="section-block">
                 <div class="section-label">Base URL</div>
@@ -763,7 +764,7 @@
             <span class="tag tag-open">Public</span>
             <h1>All Grounds</h1>
             <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/grounds</div>
-            <p class="desc">Returns a list of all available cricket grounds. Use this to populate ground-listing cards
+            <p class="desc">Returns a list of all available sports grounds. Use this to populate ground-listing cards
                 or a browse screen.</p>
             <div class="section-block">
                 <div class="section-label">Success response <span class="status-200">200</span></div>
@@ -773,6 +774,7 @@
     {
       <span class="key">"id"</span>: <span class="num">1</span>,
       <span class="key">"name"</span>: <span class="str">"Eden Turf Arena"</span>,
+      <span class="key">"sportType"</span>: <span class="str">"Football"</span>,
       <span class="key">"description"</span>: <span class="str">"Premium floodlit turf with changing rooms"</span>,
       <span class="key">"address"</span>: <span class="str">"Salt Lake, Kolkata"</span>,
       <span class="key">"latitude"</span>: <span class="num">22.5726</span>,
@@ -816,6 +818,7 @@
   <span class="key">"data"</span>: {
     <span class="key">"id"</span>: <span class="num">1</span>,
     <span class="key">"name"</span>: <span class="str">"Eden Turf Arena"</span>,
+    <span class="key">"sportType"</span>: <span class="str">"Football"</span>,
     <span class="key">"description"</span>: <span class="str">"Premium floodlit turf with changing rooms."</span>,
     <span class="key">"address"</span>: <span class="str">"Salt Lake, Kolkata"</span>,
     <span class="key">"latitude"</span>: <span class="num">22.5726</span>,
@@ -1099,9 +1102,10 @@
         <div class="page" id="page-addons-all">
             <span class="tag tag-open">Public</span>
             <h1>All Addons</h1>
-            <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/addons</div>
-            <p class="desc">Returns all available addons. Addon prices are snapshotted at booking time, so invoice
-                totals remain accurate even if prices change later.</p>
+            <div class="endpoint-header"><span class="method-badge get">GET</span> /api/v1/addons?sportType=Football</div>
+            <p class="desc">Returns all available addons. You can optionally pass <span class="code">sportType</span>
+                to fetch sport-specific addons together with shared <span class="code">Multi-Sport</span> addons.
+                Addon prices are snapshotted at booking time, so invoice totals remain accurate even if prices change later.</p>
             <div class="section-block">
                 <div class="section-label">Success response <span class="status-200">200</span></div>
                 <pre>{
@@ -1109,8 +1113,9 @@
   <span class="key">"data"</span>: [
     {
       <span class="key">"id"</span>: <span class="num">1</span>,
-      <span class="key">"name"</span>: <span class="str">"Cricket Kit"</span>,
+      <span class="key">"name"</span>: <span class="str">"Football Bib Set"</span>,
       <span class="key">"addonType"</span>: <span class="str">"Equipment"</span>,
+      <span class="key">"sportType"</span>: <span class="str">"Football"</span>,
       <span class="key">"price"</span>: <span class="num">300.00</span>,
       <span class="key">"isComplimentary"</span>: <span class="bool">false</span>,
       <span class="key">"isActive"</span>: <span class="bool">true</span>
@@ -1119,6 +1124,7 @@
       <span class="key">"id"</span>: <span class="num">4</span>,
       <span class="key">"name"</span>: <span class="str">"Water Bottles"</span>,
       <span class="key">"addonType"</span>: <span class="str">"Service"</span>,
+      <span class="key">"sportType"</span>: <span class="str">"Multi-Sport"</span>,
       <span class="key">"price"</span>: <span class="num">0.00</span>,
       <span class="key">"isComplimentary"</span>: <span class="bool">true</span>,
       <span class="key">"isActive"</span>: <span class="bool">true</span>
@@ -1126,8 +1132,8 @@
   ]
 }</pre>
             </div>
-            <div class="note">Frontend: show complimentary addons as "Free" with a checkmark, and paid addons with a
-                checkbox + price. Pass selected IDs as <span class="code">addonIds</span> in the booking request.</div>
+            <div class="note">Frontend: call this endpoint as <span class="code">/api/v1/addons?sportType={ground.sportType}</span>.
+                Show complimentary addons as "Free" with a checkmark, and paid addons with a checkbox + price. Pass selected IDs as <span class="code">addonIds</span> in the booking request.</div>
         </div>
 
         <!-- ADDON CREATE -->
@@ -1139,8 +1145,9 @@
             <div class="section-block">
                 <div class="section-label">Request body</div>
                 <pre>{
-  <span class="key">"name"</span>: <span class="str">"Scoreboard Display"</span>,
+  <span class="key">"name"</span>: <span class="str">"Ball Machine Rental"</span>,
   <span class="key">"addonType"</span>: <span class="str">"Service"</span>,
+  <span class="key">"sportType"</span>: <span class="str">"Tennis"</span>,
   <span class="key">"price"</span>: <span class="num">300.00</span>,
   <span class="key">"isComplimentary"</span>: <span class="bool">false</span>
 }</pre>
@@ -1151,8 +1158,9 @@
   <span class="key">"success"</span>: <span class="bool">true</span>,
   <span class="key">"data"</span>: {
     <span class="key">"id"</span>: <span class="num">5</span>,
-    <span class="key">"name"</span>: <span class="str">"Scoreboard Display"</span>,
+    <span class="key">"name"</span>: <span class="str">"Ball Machine Rental"</span>,
     <span class="key">"addonType"</span>: <span class="str">"Service"</span>,
+    <span class="key">"sportType"</span>: <span class="str">"Tennis"</span>,
     <span class="key">"price"</span>: <span class="num">300.00</span>,
     <span class="key">"isComplimentary"</span>: <span class="bool">false</span>,
     <span class="key">"isActive"</span>: <span class="bool">true</span>

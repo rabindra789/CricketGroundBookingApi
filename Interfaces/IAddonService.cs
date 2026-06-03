@@ -8,5 +8,5 @@ public interface IAddonService
         CreateAddonRequest request
     );
 
-    Task<List<AddonResponse>> GetAllAsync();
+    Task<List<AddonResponse>> GetAllAsync(string? sportType = null);
 }

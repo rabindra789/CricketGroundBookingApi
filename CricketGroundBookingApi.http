@@ -1,6 +1,6 @@
-@CricketGroundBookingApi_HostAddress = http://localhost:5107
+@SportsGroundBookingApi_HostAddress = http://localhost:5107
 
-GET {{CricketGroundBookingApi_HostAddress}}/weatherforecast/
+GET {{SportsGroundBookingApi_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

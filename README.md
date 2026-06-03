@@ -1,16 +1,17 @@
-# Cricket Ground Booking API
+# Sports Ground Booking API
 
 ![.NET](https://img.shields.io/badge/.NET-10-blue)
 ![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-red)
 ![Docker](https://img.shields.io/badge/Docker-Enabled-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-A backend API for cricket ground booking management built with ASP.NET Core Web API and Microsoft SQL Server.
+A backend API for multi-sport ground booking management built with ASP.NET Core Web API and Microsoft SQL Server.
 
 ## Features
 
 - User registration and JWT login
 - Ground CRUD management
+- Sport-specific ground cataloging
 - Slot CRUD management
 - Booking creation, retrieval, cancellation
 - Role-based admin authorization
@@ -127,13 +128,13 @@ http://localhost:5106/swagger
 Build the image:
 
 ```bash
-docker build -t cricket-ground-booking-api .
+docker build -t sports-ground-booking-api .
 ```
 
 Run the container:
 
 ```bash
-docker run -e DB_CONNECTION_STRING="Server=your-sql-server;Database=CricketGroundBookingDb;User Id=sa;Password=YourPassword;TrustServerCertificate=True;Encrypt=False" -p 5107:5107 cricket-ground-booking-api
+docker run -e DB_CONNECTION_STRING="Server=your-sql-server;Database=SportsGroundBookingDb;User Id=sa;Password=YourPassword;TrustServerCertificate=True;Encrypt=False" -p 5107:5107 sports-ground-booking-api
 ```
 
 > If SQL Server runs in another container, use the database container hostname instead of `localhost`.
@@ -141,19 +142,19 @@ docker run -e DB_CONNECTION_STRING="Server=your-sql-server;Database=CricketGroun
 ### Docker Network Example
 
 ```bash
-docker network create cricket-network
+docker network create sports-network
 ```
 
 Run SQL Server and API containers on the same network:
 
 ```bash
-docker run --network cricket-network ...
+docker run --network sports-network ...
 ```
 
 This allows the API container to resolve:
 
 ```bash
-cricket-db
+sports-db
 ```
 
 as the SQL Server hostname.
@@ -181,7 +182,7 @@ DB_CONNECTION_STRING
 ### OpenAPI / Swagger
 
 - `openapi: 3.0.1`
-- Title: `Cricket Ground Booking API`
+- Title: `Sports Ground Booking API`
 - Version: `v1`
 - Swagger UI is available at `/swagger` when the API is running.
 
@@ -198,10 +199,15 @@ DB_CONNECTION_STRING
 - `GET /api/v1/slots/ground/{groundId}`
 - `GET /api/v1/slots/{id}`
 
+Ground payloads support a `sportType` field so each venue can be categorized as `Cricket`, `Football`, `Badminton`, `Tennis`, `Multi-Sport`, or any custom label you use in your admin panel.
+
 ### Addon APIs
 
 - `GET /api/v1/addons`
+- `GET /api/v1/addons?sportType=Football`
 - `POST /api/v1/addons`
+
+Addon payloads also support a `sportType` field. When `sportType` is passed to the list endpoint, the API returns addons for that sport plus shared `Multi-Sport` addons.
 
 ### Admin APIs
 

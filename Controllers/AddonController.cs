@@ -17,9 +17,9 @@ public class AddonController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] string? sportType = null)
     {
-        var addons = await _addonService.GetAllAsync();
+        var addons = await _addonService.GetAllAsync(sportType);
 
         return Ok(new
         {
