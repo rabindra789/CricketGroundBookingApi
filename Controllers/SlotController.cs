@@ -72,7 +72,7 @@ public class SlotController : ControllerBase
     {
         var slot = await _slotService.CreateAsync(request);
 
-        return Ok(new
+        return StatusCode(StatusCodes.Status201Created, new
         {
             success = true,
             message = "Slot created successfully",
@@ -123,10 +123,6 @@ public class SlotController : ControllerBase
             });
         }
 
-        return Ok(new
-        {
-            success = true,
-            message = "Slot deleted successfully"
-        });
+        return NoContent();
     }
 }

@@ -22,6 +22,7 @@ public class AddonService : IAddonService
             Id = addon.Id,
             Name = addon.Name,
             AddonType = addon.AddonType,
+            Description = addon.AddonType,
             SportType = addon.SportType,
             Price = addon.Price,
             IsComplimentary = addon.IsComplimentary,
@@ -36,7 +37,7 @@ public class AddonService : IAddonService
         var addon = new Addon
         {
             Name = request.Name,
-            AddonType = request.AddonType,
+            AddonType = request.EffectiveDescription,
             SportType = NormalizeSportType(request.SportType),
             Price = request.Price,
             IsComplimentary = request.IsComplimentary,
@@ -70,6 +71,45 @@ public class AddonService : IAddonService
             .ToListAsync();
 
         return addons.Select(MapToResponse).ToList();
+    }
+
+    public async Task<AddonResponse?> UpdateAsync(
+        long id,
+        CreateAddonRequest request
+    )
+    {
+        var addon = await _context.Addons
+            .FirstOrDefaultAsync(a => a.Id == id && a.IsActive);
+
+        if (addon is null)
+            return null;
+
+        addon.Name = request.Name;
+        addon.AddonType = request.EffectiveDescription;
+        addon.SportType = NormalizeSportType(request.SportType);
+        addon.Price = request.Price;
+        addon.IsComplimentary = request.IsComplimentary;
+        addon.UpdatedAt = DateTime.UtcNow;
+
+        await _context.SaveChangesAsync();
+
+        return MapToResponse(addon);
+    }
+
+    public async Task<bool> DeleteAsync(long id)
+    {
+        var addon = await _context.Addons
+            .FirstOrDefaultAsync(a => a.Id == id && a.IsActive);
+
+        if (addon is null)
+            return false;
+
+        addon.IsActive = false;
+        addon.UpdatedAt = DateTime.UtcNow;
+
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
     private static string NormalizeSportType(string? sportType)

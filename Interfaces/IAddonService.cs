@@ -9,4 +9,6 @@ public interface IAddonService
     );
 
     Task<List<AddonResponse>> GetAllAsync(string? sportType = null);
+    Task<AddonResponse?> UpdateAsync(long id, CreateAddonRequest request);
+    Task<bool> DeleteAsync(long id);
 }

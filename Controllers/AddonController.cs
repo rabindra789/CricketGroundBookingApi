@@ -38,7 +38,7 @@ public class AddonController : ControllerBase
         {
             var addon = await _addonService.CreateAsync(request);
 
-            return Ok(new
+            return StatusCode(StatusCodes.Status201Created, new
             {
                 success = true,
                 data = addon
@@ -52,5 +52,48 @@ public class AddonController : ControllerBase
                 message = ex.Message
             });
         }
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPut("{id:long}")]
+    public async Task<IActionResult> Update(
+        long id,
+        [FromBody] CreateAddonRequest request
+    )
+    {
+        var addon = await _addonService.UpdateAsync(id, request);
+
+        if (addon is null)
+        {
+            return NotFound(new
+            {
+                success = false,
+                message = "Addon not found"
+            });
+        }
+
+        return Ok(new
+        {
+            success = true,
+            data = addon
+        });
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{id:long}")]
+    public async Task<IActionResult> Delete(long id)
+    {
+        var deleted = await _addonService.DeleteAsync(id);
+
+        if (!deleted)
+        {
+            return NotFound(new
+            {
+                success = false,
+                message = "Addon not found"
+            });
+        }
+
+        return NoContent();
     }
 }
