@@ -19,6 +19,12 @@ A backend API for multi-sport ground booking management built with ASP.NET Core 
 - Automatic EF Core migrations on startup
 - Docker-ready production container
 
+## Architecture
+
+![ER Diagram](diagrams/diagram1.png)
+
+Entity relationship diagram available in [`diagrams/erdiagram.mmd`](diagrams/erdiagram.mmd) (Mermaid format).
+
 ## Tech Stack
 
 - .NET 10 / ASP.NET Core Web API
@@ -256,13 +262,15 @@ Authorization: Bearer <token>
 
 ## Sample Users
 
+> ⚠️ Default credentials are for local development only. Change passwords immediately in production.
+
 - Admin
-    - Email: `admin@gmail.com`
-    - Password: `admin123`
+    - Email: `admin@example.com`
+    - Password: `<set-in-production>`
 
 - User
-    - Email: `rabindra@gmail.com`
-    - Password: `rabindra`
+    - Email: `user@example.com`
+    - Password: `<set-in-production>`
 
 ## Booking Logic
 
